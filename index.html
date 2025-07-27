@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HOLY SCREEN</title>
+  <style>
+    /* -- Base & Layout ------------------------------------------------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        color: #111;
+        transition: background .3s, color .3s;
+        /* Set default font size if not overridden by localStorage */
+        font-size: var(--main-font-size, 16px);
+    }
+    body.dark-mode { background: #121212; color: #eee; }
+
+    /* Custom Properties for theming */
+    :root {
+        --accent-color: #ff3300; /* Default accent color */
+        --form-bg-color: #1a0000;
+        --form-border-color: #ff6600;
+        --form-input-bg: #300000;
+        --settings-bg-gradient-start: #0d0d0d;
+        --settings-bg-gradient-end: #330000;
+        --settings-border-shadow: #ff3300;
+        --settings-glow-shadow: #990000;
+        --section-title-color: #ff6600;
+        --text-color-light: #ffdddd;
+        --message-color: #ffeecc;
+    }
+    body.dark-mode {
+        --form-bg-color: #1a0000;
+        --form-border-color: var(--accent-color);
+        --form-input-bg: #300000;
+        --settings-bg-gradient-start: #0d0d0d;
+        --settings-bg-gradient-end: #330000;
+        --settings-border-shadow: var(--accent-color);
+        --settings-glow-shadow: #990000; /* Stays reddish for glow effect */
+        --section-title-color: var(--accent-color);
+        --text-color-light: #ffdddd;
+        --message-color: #ffeecc;
+    }
+
+    /* Sidebar & Menu */
+    .menu-toggle { position: fixed; top: 10px; left: 10px; font-size: 24px; cursor: pointer; z-index: 1001; }
+    .sidebar {
+      position: fixed; top: 0; left: -260px; width: 260px; height: 100%; background: #111; color: #fff;
+      padding-top: 60px; transition: .3s; z-index: 1000;
+    }
+    .sidebar.active { left: 0; }
+    .sidebar .close-btn { position: absolute; top: 12px; right: 12px; font-size: 28px; cursor: pointer; }
+    .sidebar ul { list-style: none; }
+    .sidebar li {
+      padding: 14px 24px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+    .sidebar li:hover { background: rgba(255,255,255,.1); }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; background: #333; color: #fff;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px; z-index: 999;
+    }
+    #siteTitle { margin-left: 20px; color: var(--accent-color); font-weight: bold; }
+    .search-container input {
+      padding: 6px; width: 220px; border: 2px solid #ccc; border-radius: 6px;
+      animation: pulseBorder 2s infinite;
+    }
+    @keyframes pulseBorder {
+      0%   { box-shadow: 0 0 5px var(--accent-color), 0 0 10px white; }
+      50%  { box-shadow: 0 0 15px orange, 0 0 25px var(--accent-color); }
+      100% { box-shadow: 0 0 5px white, 0 0 10px orange; }
+    }
+
+    /* Container & Grid */
+    .container { padding: 20px; }
+    .section-title { font-size: 22px; margin: 20px 0 10px; font-weight: bold; }
+    .video-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+    }
+    .video-card {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 ratio */
+      height: 0;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,.1);
+    }
+
+    .video-card iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .video-card .video-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 5px;
+        font-size: 0.9em;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .video-card:hover .video-title {
+        opacity: 1;
+    }
+
+    .video-card .action-menu {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        z-index: 10;
+    }
+
+    .action-menu button {
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 20px;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .action-menu button:hover {
+        background: rgba(0,0,0,0.8);
+    }
+    .action-list {
+      display: none; position: absolute; top: 36px; right: 0; background: #222; color: #fff;
+      border-radius: 6px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+    .action-list.show { display: block; }
+    .action-list li {
+      padding: 8px 12px; cursor: pointer; white-space: nowrap;
+    }
+    .action-list li:hover { background: #333; }
+
+    /* Buttons */
+    .glow-button,
+    .settings-container button {
+      margin-top: 6px; padding: 6px 12px; border: none; background: var(--accent-color);
+      color: #fff; border-radius: 6px; cursor: pointer; transition: .3s;
+    }
+    .glow-button:hover,
+    .settings-container button:hover { background: #ff6600; }
+
+    /* To fix button styling, let's target the action-button specifically */
+    .action-menu .action-button {
+        margin-top: 0;
+        padding: 0;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .action-menu .action-button:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    /* Panels */
+    #signInPage, #signUpPage, #settingsPage {
+      display: none; min-height: 100vh; padding: 40px 20px;
+      background: radial-gradient(circle at top left, #220000, #000 80%);
+      color: #fff; position: relative; overflow-y: auto;
+      animation: fadeInPanel .6s ease;
+    }
+    @keyframes fadeInPanel {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Form & Settings */
+    .form-container {
+      max-width: 500px; margin: auto; background: var(--form-bg-color);
+      padding: 30px; border-radius: 12px; box-shadow: 0 0 20px var(--accent-color);
+      animation: pulseGlow 4s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0%,100% { box-shadow: 0 0 12px var(--accent-color); }
+      50%     { box-shadow: 0 0 20px #ff6600; }
+    }
+    .form-container input {
+      width: 100%; padding: 12px; margin-bottom: 12px;
+      border-radius: 6px; border: 1px solid var(--form-border-color);
+      background: var(--form-input-bg); color: #fff; font-size: 16px; transition: .3s;
+    }
+    .form-container input:focus { outline: none; box-shadow: 0 0 10px #ff9900; }
+    .form-container a { display: block; margin-top: 12px; text-align: center; color: #ffcc99; }
+    .glow-button {
+      width: 100%; background: linear-gradient(to right,var(--accent-color),#ff6600);
+      color: #fff; padding: 12px; border-radius: 8px; font-size: 16px;
+      box-shadow: 0 0 10px var(--accent-color); transition: .3s; display: block;
+    }
+
+    .settings-container {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+      background: linear-gradient(to bottom right,var(--settings-bg-gradient-start),var(--settings-bg-gradient-end));
+      padding: 40px; border-radius: 12px; max-width: 800px; margin: auto;
+      box-shadow: 0 0 15px var(--settings-border-shadow),0 0 25px var(--settings-glow-shadow);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .settings-container h2 {
+      grid-column: span 2; border-bottom: 1px solid rgba(255,255,255,.2);
+      padding-bottom: 6px; margin-bottom: 10px; color: var(--section-title-color);
+    }
+    .settings-container label { font-weight: bold; margin-bottom: 6px; display: block; color: var(--text-color-light); }
+    .settings-container input[type="text"],
+    .settings-container input[type="email"],
+    .settings-container input[type="password"],
+    .settings-container input[type="number"],
+    .settings-container input[type="time"],
+    .settings-container select {
+      width: 90%; padding: 10px; border-radius: 8px; border: 1px solid var(--form-border-color);
+      background: var(--form-input-bg); color: #fff; transition: .3s;
+    }
+    .settings-container input:focus,
+    .settings-container select:focus {
+      outline: none; border: 2px solid var(--form-border-color); box-shadow: 0 0 10px var(--accent-color);
+    }
+    .settings-container input[type="checkbox"] {
+      margin-right: 10px; /* Space between checkbox and label */
+    }
+    #qualityMsg, #generalSettingsMsg, #reminderMessage {
+      grid-column: span 2; margin-top: 10px; font-weight: bold; color: var(--message-color);
+    }
+
+    /* Smaller Profile Photo */
+    #userPhoto {
+        width: 60px; /* Smaller width */
+        height: 60px; /* Smaller height */
+        object-fit: cover; /* Ensures image covers the area without distortion */
+        border-radius: 50%;
+        box-shadow: 0 0 8px var(--accent-color); /* Slightly smaller glow */
+        margin-bottom: 10px;
+    }
+
+    /* Footer */
+    footer { background: #222; color: #fff; text-align: center; padding: 20px; margin-top: 20px; }
+
+    @media (max-width: 600px) {
+      .video-grid, .settings-container { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body onload="initPage()">
+
+  <div class="menu-toggle" id="menuToggle">=</div>
+  <nav class="sidebar" id="sidebar">
+    <div class="close-btn" id="closeSidebar">×</div>
+    <ul>
+      <li onclick="showLibrary()">Library</li>
+      <li onclick="openSignInPage()">Sign In</li>
+      <li onclick="openSignUpPage()">Sign Up</li>
+      <li onclick="openSettings()">Settings</li>
+      <li onclick="toggleMode()">Theme</li>
+      <li onclick="signOut()">Sign Out</li>
+    </ul>
+  </nav>
+
+  <header>
+    <div id="siteTitle">HOLY SCREEN</div>
+    <div class="search-container">
+      <input id="searchInput" placeholder="Search videos..." onkeyup="searchVideos()" />
+    </div>
+    <a id="profileBtn" href="javascript:void(0)" onclick="openSettings()" style="display:none;"></a>
+  </header>
+<main class="container" id="library">
+  <div class="section-title">HOLY SCREEN Movie Library</div>
+  <div class="video-grid">
+  
+    <!-- JESUS – Tshivenda -->
+    <div class="video-card" onclick="logWatched('JESUS – Tshivenda')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/LJLxjhQIXNU?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Tshivenda</div> 
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Tshivenda')">Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Tshivenda')">Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Tshivenda','https://youtu.be/LJLxjhQIXNU')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JESUS – Sepedi -->
+    <div class="video-card" onclick="logWatched('JESUS – Sepedi')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/Jh921zkJpfc?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Sepedi</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Sepedi')">Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Sepedi')">Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Sepedi','https://youtu.be/Jh921zkJpfc')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JESUS – Tsonga -->
+    <div class="video-card" onclick="logWatched('JESUS – Tsonga')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/-5LRQbzzDuc?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Tsonga</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Tsonga')">? Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Tsonga')">?? Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Tsonga','https://youtu.be/-5LRQbzzDuc')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JESUS – Zulu -->
+    <div class="video-card" onclick="logWatched('JESUS – Zulu')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/9jE6KFiQouY?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Zulu</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Zulu')">Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Zulu')">Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Zulu','https://youtu.be/9jE6KFiQouY')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JESUS – Xhosa -->
+    <div class="video-card" onclick="logWatched('JESUS – Xhosa')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/zd7yaTYKgQ4?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Xhosa</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Xhosa')">Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Xhosa')">Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Xhosa','https://youtu.be/zd7yaTYKgQ4')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JESUS – Afrikaans -->
+    <div class="video-card" onclick="logWatched('JESUS – Afrikaans')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/pmlr5qgEXQg?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Afrikaans</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Afrikaans')">Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Afrikaans')">Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Afrikaans','https://youtu.be/pmlr5qgEXQg')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JESUS – Setswana -->
+    <div class="video-card" onclick="logWatched('JESUS – Setswana')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/uc39r9o87jo?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Setswana</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Setswana')">Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Setswana')">Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Setswana','https://youtu.be/uc39r9o87jo')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JESUS – Sesotho -->
+    <div class="video-card" onclick="logWatched('JESUS – Sesotho')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/2YibcWSHww4?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">JESUS – Sesotho</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('JESUS – Sesotho')">Add to Playlist</li>
+          <li onclick="addToFavorites('JESUS – Sesotho')">Favorite</li>
+          <li onclick="shareToWhatsApp('JESUS – Sesotho','https://youtu.be/2YibcWSHww4')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Gospel of John -->
+    <div class="video-card" onclick="logWatched('Gospel of John')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/-k0D_qFPb4o?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Gospel of John</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Gospel of John')">Add to Playlist</li>
+          <li onclick="addToFavorites('Gospel of John')">Favorite</li>
+          <li onclick="shareToWhatsApp('Gospel of John','https://youtu.be/-k0D_qFPb4o')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Gospel of Matthew -->
+    <div class="video-card" onclick="logWatched('Gospel of Matthew')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/2ErTneBIJJs?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Gospel of Matthew</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Gospel of Matthew')">Add to Playlist</li>
+          <li onclick="addToFavorites('Gospel of Matthew')">Favorite</li>
+          <li onclick="shareToWhatsApp('Gospel of Matthew','https://youtu.be/2ErTneBIJJs')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">? Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Gospel of Mark -->
+    <div class="video-card" onclick="logWatched('Gospel of Mark')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/rh9yjReuWH0?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Gospel of Mark</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Gospel of Mark')">Add to Playlist</li>
+          <li onclick="addToFavorites('Gospel of Mark')">Favorite</li>
+          <li onclick="shareToWhatsApp('Gospel of Mark','https://youtu.be/rh9yjReuWH0')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Gospel of Luke -->
+    <div class="video-card" onclick="logWatched('Gospel of Luke')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/klzda4dYqio?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Gospel of Luke</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Gospel of Luke')">Add to Playlist</li>
+          <li onclick="addToFavorites('Gospel of Luke')">Favorite</li>
+          <li onclick="shareToWhatsApp('Gospel of Luke','https://youtu.be/klzda4dYqio')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Magdalena – A Jesus Story -->
+    <div class="video-card" onclick="logWatched('Magdalena – A Jesus Story')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/BXWH0PNccbk?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Magdalena – A Jesus Story</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Magdalena – A Jesus Story')">Add to Playlist</li>
+          <li onclick="addToFavorites('Magdalena – A Jesus Story')">Favorite</li>
+          <li onclick="shareToWhatsApp('Magdalena – A Jesus Story','https://youtu.be/BXWH0PNccbk')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Moses (1995) -->
+    <div class="video-card" onclick="logWatched('Moses (1995)')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/KX83ed0Tg6g?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Moses (1995)</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Moses (1995)')">Add to Playlist</li>
+          <li onclick="addToFavorites('Moses (1995)')">Favorite</li>
+          <li onclick="shareToWhatsApp('Moses (1995)','https://youtu.be/KX83ed0Tg6g')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Moses and Exodus -->
+    <div class="video-card" onclick="logWatched('Moses and Exodus')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/RnmBUpofgpY?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Moses and Exodus</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Moses and Exodus')">Add to Playlist</li>
+          <li onclick="addToFavorites('Moses and Exodus')">Favorite</li>
+          <li onclick="shareToWhatsApp('Moses and Exodus','https://youtu.be/RnmBUpofgpY')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Abraham and Sarah – Great People of the Bible -->
+    <div class="video-card" onclick="logWatched('Abraham and Sarah – Great People of the Bible')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/_f_jJ2sG24A?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Abraham and Sarah – Great People of the Bible</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Abraham and Sarah – Great People of the Bible')">Add to Playlist</li>
+          <li onclick="addToFavorites('Abraham and Sarah – Great People of the Bible')">Favorite</li>
+          <li onclick="shareToWhatsApp('Abraham and Sarah – Great People of the Bible','https://youtu.be/_f_jJ2sG24A')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Genesis – Abraham (KJV) -->
+    <div class="video-card" onclick="logWatched('Genesis – Abraham (KJV)')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/JZoQZw22nGo?rel=0&start=587"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Genesis – Abraham (KJV)</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Genesis – Abraham (KJV)')">Add to Playlist</li>
+          <li onclick="addToFavorites('Genesis – Abraham (KJV)')">Favorite</li>
+          <li onclick="shareToWhatsApp('Genesis – Abraham (KJV)','https://youtu.be/JZoQZw22nGo?start=587')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Book of Genesis -->
+    <div class="video-card" onclick="logWatched('Book of Genesis')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/JMde2CS7NFc?rel=0&start=587"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Book of Genesis</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Book of Genesis')">Add to Playlist</li>
+          <li onclick="addToFavorites('Book of Genesis')">Favorite</li>
+          <li onclick="shareToWhatsApp('Book of Genesis','https://youtu.be/JMde2CS7NFc?start=587')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Story of Ruth -->
+    <div class="video-card" onclick="logWatched('Story of Ruth')">
+      <iframe data-quality
+              src="https://www.youtube.com/embed/kW5WyJ1QNpM?rel=0"
+              allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-title">Story of Ruth</div>
+      <div class="action-menu">
+        <button class="action-button" onclick="toggleMenu(this); event.stopPropagation()"></button>
+        <ul class="action-list">
+          <li onclick="addToPlaylist('Story of Ruth')">Add to Playlist</li>
+          <li onclick="addToFavorites('Story of Ruth')">Favorite</li>
+          <li onclick="shareToWhatsApp('Story of Ruth','https://youtu.be/kW5WyJ1QNpM')">Share</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))"Fullscreen</li>
+        </ul>
+      </div>
+    </div>
+ 
+  </div>
+</main>
+
+  <section id="signInPage">
+    <div class="form-container">
+      <h1>Sign In to HOLY SCREEN</h1>
+      <label for="signInEmail">Email</label>
+      <input id="signInEmail" type="email" placeholder="Email" required />
+      <label for="signInPassword">Password</label>
+      <input id="signInPassword" type="password" placeholder="Password" required />
+      <button class="glow-button" onclick="submitSignIn()">Sign In</button>
+      <p><a href="javascript:void(0)" onclick="openSignUpPage()">Need an account? Sign Up</a></p>
+      <button class="glow-button" onclick="goHome()">Back to Library</button>
+      <div id="signInMessage"></div>
+    </div>
+  </section>
+
+  <section id="signUpPage">
+    <div class="form-container">
+      <h1>Create HOLY SCREEN Account</h1>
+      <label for="signUpEmail">Email</label>
+      <input id="signUpEmail" type="email" placeholder="Email" required />
+      <label for="signUpPassword">Password</label>
+      <input id="signUpPassword" type="password" placeholder="Password (min 6 chars)" required />
+      <label for="signUpConfirm">Confirm Password</label>
+      <input id="signUpConfirm" type="password" placeholder="Confirm Password" required />
+      <button class="glow-button" onclick="submitSignUp()">Sign Up</button>
+      <p><a href="javascript:void(0)" onclick="openSignInPage()">Already have an account? Sign In</a></p>
+      <button class="glow-button" onclick="goHome()">Back to Library</button>
+      <div id="signUpMessage"></div>
+    </div>
+  </section>
+
+  <section id="settingsPage">
+    <h1>My Settings</h1>
+    <div class="settings-container">
+      <h2>Profile Management</h2>
+      <div style="grid-column:span 2; text-align:center;">
+        <img id="userPhoto" src="https://via.placeholder.com/80"
+             style="border-radius:50%; box-shadow:0 0 12px var(--accent-color);" />
+        <p>Welcome, <strong id="profileNameDisplay">Guest</strong></p>
+        <p>Status: <strong id="profileStatus">Guest</strong></p>
+        <button onclick="editProfileName()">Edit Name</button>
+      </div>
+
+      <label for="profilePhotoInput">Change Profile Photo</label>
+      <input type="file" id="profilePhotoInput" accept="image/*" onchange="saveProfilePhoto(this)" />
+
+      <h2>Watch History</h2>
+      <ul id="historyList" style="list-style:none; padding:0; grid-column:span 2;">
+        <li>No history yet</li>
+      </ul>
+      <button onclick="clearHistory()" style="grid-column:span 2;">Clear History</button>
+
+      <h2>My Playlists</h2>
+      <label for="playlistName">Name Your Playlist</label>
+      <input id="playlistName" placeholder="E.g. Bible Heroes" />
+      <button onclick="createPlaylist()">Create Playlist</button>
+      <div id="playlistsView" style="grid-column:span 2;"></div>
+      <button onclick="managePlaylists()" style="grid-column:span 2;">Manage Playlists</button>
+
+      <h2>Reminders</h2>
+      <label for="breakMinutes">Break Reminder (minutes)</label>
+      <input id="breakMinutes" type="number" min="1" placeholder="30" />
+      <button onclick="startBreakReminder()">Start Timer</button>
+      <span><label for="bedtimeInput">Bedtime Reminder</label></span>
+      <input id="bedtimeInput" type="time" />
+      <button onclick="setBedtimeReminder()">Set Bedtime</button>
+      <div id="reminderMessage" style="grid-column: span 2; color: var(--message-color);"></div>
+
+
+      <h2>Language & Video Quality</h2>
+      <label for="languageInput">Preferred Language</label>
+      <input id="languageInput" placeholder="English, Zulu..." />
+      <button onclick="setGlobalLanguage()">Save Language</button>
+      <label for="qualitySelect">Video Quality</label>
+      <select id="qualitySelect">
+        <option value="default">Auto / Default</option>
+        <option value="hd">HD (720p)</option>
+        <option value="fullhd">Full HD (1080p)</option>
+        <option value="low">Low (360p)</option>
+      </select>
+      <button onclick="saveQuality()">Save Quality</button>
+      <div id="qualityMsg"></div>
+
+      <h2>Notifications</h2>
+      <label style="grid-column:span 2;">
+        <input type="checkbox" id="emailNotifications" /> Receive email notifications
+      </label>
+      <label style="grid-column:span 2;">
+        <input type="checkbox" id="pushNotifications" /> Receive push notifications
+      </label>
+      <button onclick="saveNotifications()">Save Notification Settings</button>
+
+      <h2>Privacy</h2>
+      <label style="grid-column:span 2;">
+        <input type="checkbox" id="dataSharing" /> Share anonymous usage data
+      </label>
+      <label style="grid-column:span 2;">
+        <input type="checkbox" id="personalizedContent" /> Personalized content recommendations
+      </label>
+      <button onclick="savePrivacySettings()">Save Privacy Settings</button>
+
+      <h2>Display</h2>
+      <label for="fontSize">Font Size</label>
+      <select id="fontSize">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+      </select>
+      <button onclick="setFontSize()">Apply</button>
+      <label for="accentColor">Accent Color</label>
+      <input type="color" id="accentColor" value="#ff3300">
+      <button onclick="setAccentColor()">Apply</button>
+
+
+      <h2>Accessibility</h2>
+      <label style="grid-column:span 2;">
+        <input type="checkbox" id="closedCaptions" /> Enable Closed Captions (CC)
+      </label>
+      <label for="captionSize">Caption Text Size</label>
+      <select id="captionSize">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+      </select>
+      <button onclick="saveAccessibility()">Save Accessibility</button>
+
+
+      <h2>Account Management</h2>
+      <label for="currentPassword">Current Password</label>
+      <input type="password" id="currentPassword" placeholder="Current Password">
+      <label for="newPassword">New Password</label>
+      <input type="password" id="newPassword" placeholder="New Password">
+      <button onclick="changePassword()">Change Password</button>
+      <button class="glow-button" onclick="deleteAccount()" style="grid-column:span 2; background:#cc0000;">Delete Account</button>
+
+
+      <h2>Advanced</h2>
+      <button onclick="clearCache()">Clear Cache</button>
+      <button onclick="resetAllSettings()">Reset All Settings</button>
+
+
+      <button class="glow-button" onclick="goHome()" style="grid-column:span 2;">Back to Library</button>
+      <div id="generalSettingsMsg"></div>
+    </div>
+  </section>
+
+  <footer>© 2025 HOLY SCREEN</footer>
+
+  <script>
+    // --- Global Variables & Initial Setup ---
+    let breakTimer;
+    let bedtimeInterval;
+
+    // Detect system theme on first visit and apply it
+    if (!localStorage.getItem('theme')) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      localStorage.setItem('theme', prefersDark ? 'dark' : 'light');
+    }
+
+    // Function to run when the page loads
+    function initPage() {
+      // Apply dark mode if saved
+      if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+
+      // Update UI based on login status
+      if (localStorage.getItem('loggedIn') === 'true') {
+        document.getElementById('profileBtn').style.display = 'block';
+        document.getElementById('profileNameDisplay').innerText = localStorage.getItem('profileName') || localStorage.getItem('email');
+        document.getElementById('profileStatus').innerText = 'Signed In';
+      }
+
+      // Apply video quality from saved settings
+      applyVideoQuality();
+      // Load all saved settings to their respective controls
+      loadSettings();
+      // Start checking for bedtime reminder
+      setupBedtimeReminderCheck();
+    }
+
+    // Helper to apply video quality to iframes (if any)
+    function applyVideoQuality() {
+      const q = localStorage.getItem('videoQuality');
+      const iframes = document.querySelectorAll('iframe[data-quality]');
+      if (!q || q === 'default') {
+          // If default, remove specific quality parameters if they were set
+          iframes.forEach(f => {
+              let url = new URL(f.src);
+              url.searchParams.delete('vq');
+              url.searchParams.set('rel', '0'); // Ensure 'rel=0' is always there for YouTube
+              f.src = url.toString();
+          });
+          return;
+      }
+
+      iframes.forEach(f => {
+        let url = new URL(f.src);
+        url.searchParams.set('rel', '0'); // Ensure 'rel=0' for YouTube
+        if (q === 'hd') url.searchParams.set('vq', 'hd720');
+        if (q === 'fullhd') url.searchParams.set('vq', 'hd1080');
+        if (q === 'low') url.searchParams.set('vq', 'small'); // 'small' for 240p/360p
+        f.src = url.toString();
+      });
+    }
+
+    // Loads all saved settings from localStorage and applies them to the UI elements
+    function loadSettings() {
+        // Profile Photo
+        loadProfilePhoto();
+        // Profile Name
+        document.getElementById('profileNameDisplay').innerText = localStorage.getItem('profileName') || localStorage.getItem('email') || 'Guest';
+
+        // Language
+        document.getElementById('languageInput').value = localStorage.getItem('preferredLanguage') || '';
+        // Quality
+        document.getElementById('qualitySelect').value = localStorage.getItem('videoQuality') || 'default';
+
+        // Notifications (checkboxes use 'true'/'false' strings)
+        document.getElementById('emailNotifications').checked = localStorage.getItem('emailNotifications') === 'true';
+        document.getElementById('pushNotifications').checked = localStorage.getItem('pushNotifications') === 'true';
+
+        // Privacy
+        document.getElementById('dataSharing').checked = localStorage.getItem('dataSharing') === 'true';
+        document.getElementById('personalizedContent').checked = localStorage.getItem('personalizedContent') === 'true';
+
+        // Display
+        document.getElementById('fontSize').value = localStorage.getItem('fontSize') || 'medium';
+        document.documentElement.style.setProperty('--main-font-size', getFontSizeValue(localStorage.getItem('fontSize')));
+        document.getElementById('accentColor').value = localStorage.getItem('accentColor') || '#ff3300';
+        document.documentElement.style.setProperty('--accent-color', localStorage.getItem('accentColor') || '#ff3300');
+
+        // Accessibility
+        document.getElementById('closedCaptions').checked = localStorage.getItem('closedCaptions') === 'true';
+        document.getElementById('captionSize').value = localStorage.getItem('captionSize') || 'medium';
+
+        // Reminders
+        document.getElementById('breakMinutes').value = localStorage.getItem('breakMinutes') || '';
+        document.getElementById('bedtimeInput').value = localStorage.getItem('bedtime') || '';
+    }
+
+    // Helper to get font size value for CSS variable
+    function getFontSizeValue(size) {
+        switch(size) {
+            case 'small': return '14px';
+            case 'large': return '18px';
+            default: return '16px';
+        }
+    }
+
+    // --- Sidebar & Navigation ---
+    const sidebar = document.getElementById('sidebar'),
+          menuToggle = document.getElementById('menuToggle'),
+          closeSidebar = document.getElementById('closeSidebar');
+
+    menuToggle.onclick = e => { e.stopPropagation(); sidebar.classList.toggle('active'); };
+    closeSidebar.onclick = () => sidebar.classList.remove('active');
+    document.addEventListener('click', e => {
+      if (sidebar.classList.contains('active') &&
+          !sidebar.contains(e.target) &&
+          e.target !== menuToggle) {
+        sidebar.classList.remove('active');
+      }
+    });
+
+    function hideAll() {
+      ['library','signInPage','signUpPage','settingsPage'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+    }
+    function showLibrary() { hideAll(); document.getElementById('library').style.display = 'block'; }
+    function openSignInPage() { hideAll(); document.getElementById('signInPage').style.display = 'block'; }
+    function openSignUpPage() { hideAll(); document.getElementById('signUpPage').style.display = 'block'; }
+    function openSettings() {
+      hideAll();
+      document.getElementById('settingsPage').style.display = 'block';
+      // Ensure profile info is up-to-date when opening settings
+      document.getElementById('profileNameDisplay').innerText = localStorage.getItem('profileName') || localStorage.getItem('email') || 'Guest';
+      document.getElementById('profileStatus').innerText = localStorage.getItem('loggedIn') === 'true' ? 'Signed In' : 'Guest';
+      loadProfilePhoto();
+      renderWatchHistory();
+      renderPlaylists();
+      loadSettings(); // Ensure all settings controls reflect saved state
+    }
+    function goHome() { showLibrary(); }
+
+    // --- Authentication ---
+    function submitSignIn() {
+      const e = document.getElementById('signInEmail').value.trim(),
+            p = document.getElementById('signInPassword').value.trim(),
+            m = document.getElementById('signInMessage');
+      if (!e || p.length < 6 || localStorage.getItem(e) !== p) {
+        m.innerText = 'Invalid email or password.'; return;
+      }
+      localStorage.setItem('loggedIn','true');
+      localStorage.setItem('email', e);
+      // If no profile name set, use email as default
+      if (!localStorage.getItem('profileName')) {
+          localStorage.setItem('profileName', e.split('@')[0]); // Use part before @
+      }
+      m.innerText = 'Signed in successfully!';
+      document.getElementById('profileBtn').style.display = 'block';
+      setTimeout(goHome, 800);
+    }
+
+    function submitSignUp() {
+      const e = document.getElementById('signUpEmail').value.trim(),
+            p = document.getElementById('signUpPassword').value.trim(),
+            c = document.getElementById('signUpConfirm').value.trim(),
+            m = document.getElementById('signUpMessage');
+      if (!e || p.length < 6 || p !== c) {
+        m.innerText = 'Please enter a valid email and ensure passwords match (min 6 chars).'; return;
+      }
+      if (localStorage.getItem(e)) {
+        m.innerText = 'This email is already registered.'; return;
+      }
+      localStorage.setItem(e, p); // Store email as key, password as value
+      localStorage.setItem('profileName', e.split('@')[0]); // Set initial profile name
+      m.innerText = 'Account created successfully! Please sign in.';
+      setTimeout(openSignInPage, 800);
+    }
+
+    function signOut() {
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('email');
+      document.getElementById('profileBtn').style.display = 'none';
+      alert('You have been signed out.');
+      goHome();
+    }
+
+    // --- Profile Management ---
+    function saveProfilePhoto(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      // Limit file size (e.g., 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+          alert('Photo is too large. Max size is 2MB.');
+          return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const photoURL = e.target.result;
+        document.getElementById('userPhoto').src = photoURL;
+        localStorage.setItem('profilePhoto', photoURL);
+        alert('Profile photo updated!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadProfilePhoto() {
+      const photo = localStorage.getItem('profilePhoto');
+      if (photo) {
+        document.getElementById('userPhoto').src = photo;
+      } else {
+        document.getElementById('userPhoto').src = 'https://via.placeholder.com/60'; // Default small placeholder
+      }
+    }
+
+    function editProfileName() {
+        const currentName = localStorage.getItem('profileName') || localStorage.getItem('email').split('@')[0] || 'Guest';
+        const newName = prompt('Enter your new profile name:', currentName);
+        if (newName !== null && newName.trim() !== '') {
+            localStorage.setItem('profileName', newName.trim());
+            document.getElementById('profileNameDisplay').innerText = newName.trim();
+            alert('Profile name updated!');
+        } else if (newName !== null) {
+            alert('Profile name cannot be empty.');
+        }
+    }
+
+    // --- Watch History & Playlists ---
+    function logWatched(title) {
+      const arr = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+      // Check if video is already in history, remove it to add at top
+      const existingIndex = arr.findIndex(item => item.title === title);
+      if (existingIndex > -1) {
+          arr.splice(existingIndex, 1);
+      }
+      arr.push({ title, time: new Date().toLocaleString() });
+      localStorage.setItem('watchHistory', JSON.stringify(arr));
+      renderWatchHistory(); // Update history display
+    }
+
+    function renderWatchHistory() {
+      const arr = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+      const ul = document.getElementById('historyList');
+      ul.innerHTML = arr.length ? '' : '<li>No history yet</li>';
+      // Display last 5 watched, most recent first
+      arr.slice(-5).reverse().forEach(it => {
+        const li = document.createElement('li');
+        li.innerText = `${it.title} @ ${it.time}`;
+        ul.append(li);
+      });
+    }
+
+    function clearHistory() {
+      if (confirm('Are you sure you want to clear your entire watch history?')) {
+        localStorage.removeItem('watchHistory');
+        renderWatchHistory();
+        alert('Watch history cleared!');
+      }
+    }
+
+    function createPlaylist() {
+      const name = document.getElementById('playlistName').value.trim();
+      const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
+      if (!name) { alert('Please enter a name for your playlist.'); return; }
+      if (lists[name]) { alert('A playlist with this name already exists. Please choose a different name.'); return; }
+      lists[name] = []; // Initialize as empty array
+      localStorage.setItem('playlists', JSON.stringify(lists));
+      document.getElementById('playlistName').value = '';
+      renderPlaylists();
+      alert(`Playlist "${name}" created successfully!`);
+    }
+
+    function renderPlaylists() {
+      const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
+      const view = document.getElementById('playlistsView');
+      view.innerHTML = Object.keys(lists).length ? '' : '<p>No playlists created yet.</p>';
+      Object.keys(lists).forEach(key => {
+        const div = document.createElement('div');
+        div.innerHTML = `<strong>${key}</strong> (${lists[key].length} videos) <button onclick="deletePlaylist('${key}'); event.stopPropagation();">Delete</button>`;
+        view.append(div);
+      });
+    }
+
+    function deletePlaylist(name) {
+        if (confirm(`Are you sure you want to delete the playlist "${name}"? This cannot be undone.`)) {
+            const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
+            delete lists[name];
+            localStorage.setItem('playlists', JSON.stringify(lists));
+            renderPlaylists();
+            alert(`Playlist "${name}" deleted.`);
+        }
+    }
+
+    function addToPlaylist(title) {
+      const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
+      const playlistNames = Object.keys(lists);
+
+      if (playlistNames.length === 0) {
+        alert('You haven\'t created any playlists yet. Please create one in settings first.');
+        return;
+      }
+
+      // Prompt for playlist selection
+      const chosen = prompt(`Add "${title}" to which playlist?\nAvailable: ${playlistNames.join(', ')}\n(Enter playlist name):`);
+
+      if (chosen === null || chosen.trim() === '') return; // User cancelled or entered empty string
+
+      if (lists[chosen]) {
+        if (!lists[chosen].includes(title)) { // Prevent duplicates
+            lists[chosen].push(title);
+            localStorage.setItem('playlists', JSON.stringify(lists));
+            alert(`"${title}" added to "${chosen}"!`);
+            renderPlaylists(); // Update count in settings view
+        } else {
+            alert(`"${title}" is already in "${chosen}".`);
+        }
+      } else {
+        alert(`Playlist "${chosen}" not found. Please enter an existing playlist name from the list.`);
+      }
+    }
+
+    // This is still a placeholder for a more complex UI
+    function managePlaylists() {
+        alert('This feature would open a detailed playlist management page where you can reorder, rename, or remove videos from playlists. (Not fully implemented in this demo)');
+    }
+
+    // --- Reminders ---
+    function startBreakReminder() {
+      const m = parseInt(document.getElementById('breakMinutes').value);
+      const reminderMsg = document.getElementById('reminderMessage');
+      if (isNaN(m) || m < 1) {
+        reminderMsg.innerText = 'Please enter a valid number of minutes (1 or more) for your break reminder.';
+        return;
+      }
+      clearTimeout(breakTimer); // Clear any previous timer
+      breakTimer = setTimeout(() => {
+        alert('Time for a break! Take a moment to rest your eyes.');
+        reminderMsg.innerText = ''; // Clear message after reminder
+      }, m * 60000); // Convert minutes to milliseconds
+      localStorage.setItem('breakMinutes', m.toString()); // Save as string
+      reminderMsg.innerText = `Break reminder set for ${m} minutes.`;
+    }
+
+    function setBedtimeReminder() {
+      const t = document.getElementById('bedtimeInput').value;
+      const reminderMsg = document.getElementById('reminderMessage');
+      if (!t) {
+        reminderMsg.innerText = 'Please set a valid time for your bedtime reminder.';
+        return;
+      }
+      localStorage.setItem('bedtime', t);
+      reminderMsg.innerText = `Bedtime reminder set for ${t}.`;
+      setupBedtimeReminderCheck(); // Re-setup to ensure new time is picked up
+    }
+
+    function setupBedtimeReminderCheck() {
+      if (bedtimeInterval) {
+        clearInterval(bedtimeInterval); // Clear any existing interval
+      }
+      const bedtime = localStorage.getItem('bedtime');
+      if (bedtime) {
+        bedtimeInterval = setInterval(() => {
+          const [bedH, bedM] = bedtime.split(':').map(Number);
+          const now = new Date();
+          const currentH = now.getHours();
+          const currentM = now.getMinutes();
+
+          if (currentH === bedH && currentM === bedM) {
+            alert('It\'s bedtime! Time to unwind and rest for HOLY SCREEN.');
+            // Prevent multiple alerts within the same minute
+            clearInterval(bedtimeInterval);
+            // Re-check after 60 seconds to allow for minute roll-over
+            setTimeout(setupBedtimeReminderCheck, 60 * 1000);
+          }
+        }, 60 * 1000); // Check every minute
+      }
+    }
+
+    // --- Language & Video Quality ---
+    function setGlobalLanguage() {
+      const l = document.getElementById('languageInput').value.trim();
+      localStorage.setItem('preferredLanguage', l);
+      document.getElementById('generalSettingsMsg').innerText = l ? `Preferred language saved: ${l}` : 'Preferred language cleared.';
+    }
+
+    function saveQuality() {
+      const q = document.getElementById('qualitySelect').value;
+      localStorage.setItem('videoQuality', q);
+      applyVideoQuality(); // Re-apply quality to current videos
+      document.getElementById('qualityMsg').innerText = `Video quality set to: ${q}.`;
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme',
+        document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // --- Notifications ---
+    function saveNotifications() {
+        localStorage.setItem('emailNotifications', document.getElementById('emailNotifications').checked);
+        localStorage.setItem('pushNotifications', document.getElementById('pushNotifications').checked);
+        document.getElementById('generalSettingsMsg').innerText = 'Notification settings saved!';
+    }
+
+    // --- Privacy ---
+    function savePrivacySettings() {
+        localStorage.setItem('dataSharing', document.getElementById('dataSharing').checked);
+        localStorage.setItem('personalizedContent', document.getElementById('personalizedContent').checked);
+        document.getElementById('generalSettingsMsg').innerText = 'Privacy settings saved!';
+    }
+
+    // --- Display ---
+    function setFontSize() {
+        const size = document.getElementById('fontSize').value;
+        document.documentElement.style.setProperty('--main-font-size', getFontSizeValue(size));
+        localStorage.setItem('fontSize', size);
+        document.getElementById('generalSettingsMsg').innerText = `Font size set to ${size}.`;
+    }
+
+    function setAccentColor() {
+        const color = document.getElementById('accentColor').value;
+        document.documentElement.style.setProperty('--accent-color', color);
+        localStorage.setItem('accentColor', color);
+        document.getElementById('generalSettingsMsg').innerText = `Accent color set to ${color}.`;
+    }
+
+    // --- Accessibility ---
+    function saveAccessibility() {
+        localStorage.setItem('closedCaptions', document.getElementById('closedCaptions').checked);
+        localStorage.setItem('captionSize', document.getElementById('captionSize').value);
+        document.getElementById('generalSettingsMsg').innerText = 'Accessibility settings saved!';
+    }
+
+    // --- Account Management ---
+    function changePassword() {
+        const currentP = document.getElementById('currentPassword').value;
+        const newP = document.getElementById('newPassword').value;
+        const email = localStorage.getItem('email');
+
+        if (!email || localStorage.getItem('loggedIn') !== 'true') {
+            alert('You must be signed in to change your password.');
+            return;
+        }
+
+        if (localStorage.getItem(email) !== currentP) {
+            alert('Current password is incorrect.');
+            return;
+        }
+
+        if (newP.length < 6) {
+            alert('New password must be at least 6 characters long.');
+            return;
+        }
+
+        localStorage.setItem(email, newP); // Update password in localStorage
+        alert('Password changed successfully!');
+        // Clear password fields
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+    }
+
+    function deleteAccount() {
+        if (!localStorage.getItem('loggedIn') === 'true' || !localStorage.getItem('email')) {
+            alert('No account is currently signed in to delete.');
+            return;
+        }
+
+        if (confirm('Are you absolutely sure you want to delete your account? This action cannot be undone and all your data (profile, history, playlists) will be lost.')) {
+            const email = localStorage.getItem('email');
+            if (email) {
+                // Remove all associated user data
+                localStorage.removeItem(email); // User's password
+                localStorage.removeItem('loggedIn');
+                localStorage.removeItem('email');
+                localStorage.removeItem('profileName');
+                localStorage.removeItem('profilePhoto');
+                localStorage.removeItem('watchHistory');
+                localStorage.removeItem('playlists');
+                localStorage.removeItem('favorites'); // If you add favorites later
+                localStorage.removeItem('preferredLanguage');
+                localStorage.removeItem('videoQuality');
+                localStorage.removeItem('emailNotifications');
+                localStorage.removeItem('pushNotifications');
+                localStorage.removeItem('dataSharing');
+                localStorage.removeItem('personalizedContent');
+                localStorage.removeItem('fontSize');
+                localStorage.removeItem('accentColor');
+                localStorage.removeItem('closedCaptions');
+                localStorage.removeItem('captionSize');
+                localStorage.removeItem('breakMinutes');
+                localStorage.removeItem('bedtime');
+                clearInterval(bedtimeInterval); // Stop bedtime reminder
+
+                alert('Your account and all associated data have been deleted.');
+                goHome(); // Redirect to library or welcome page
+                location.reload(); // Force a full reload to clear all state
+            }
+        }
+    }
+
+    // --- Advanced Settings ---
+    function clearCache() {
+        if (confirm('Are you sure you want to clear the local application cache? This will log you out and reset ALL your saved preferences and data.')) {
+            localStorage.clear(); // Clears everything in localStorage
+            alert('Cache cleared! You have been logged out and all settings reset. Please sign in again.');
+            location.reload(); // Reload the page to reset everything
+        }
+    }
+
+    function resetAllSettings() {
+        if (confirm('Are you sure you want to reset ALL settings to default? Your account, watch history, and playlists will be preserved, but all other preferences will be reset.')) {
+            // List of keys to keep (user session, history, playlists, profile photo)
+            const keptKeys = [
+                'loggedIn', 'email', 'profileName', 'profilePhoto',
+                'watchHistory', 'playlists', 'favorites' // Include favorites if you implement them
+            ];
+            const tempStorage = {};
+
+            // Temporarily store the values of the keys we want to keep
+            keptKeys.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value !== null) {
+                    tempStorage[key] = value;
+                }
+            });
+
+            localStorage.clear(); // Clear all current settings
+
+            // Restore the kept items
+            for (const key in tempStorage) {
+                localStorage.setItem(key, tempStorage[key]);
+            }
+
+            // Also stop reminders if they were active
+            clearTimeout(breakTimer);
+            clearInterval(bedtimeInterval);
+
+            alert('All non-account related settings have been reset to default.');
+            location.reload(); // Reload to apply default settings
+        }
+    }
+
+    // --- Video Specific Functions ---
+    // Search (Note: This function will only search the single video in this current demo)
+    function searchVideos() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const videoCard = document.querySelector('.video-card');
+      if (videoCard) {
+        const title = videoCard.querySelector('.video-title').innerText.toLowerCase();
+        videoCard.style.display = title.includes(q) ? 'block' : 'none';
+      }
+    }
+
+    // Fullscreen for video
+    function toggleFullScreen(el) {
+      const target = el.tagName === 'IFRAME' ? el : el.querySelector('iframe');
+      if (!document.fullscreenElement) {
+        target.requestFullscreen?.() ||
+        target.webkitRequestFullscreen?.() ||
+        target.mozRequestFullScreen?.();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // --- Action Menu (Video Card context menu) ---
+    function toggleMenu(btn) {
+      const list = btn.nextElementSibling;
+      // Close any other open action lists
+      document.querySelectorAll('.action-list.show').forEach(el => {
+        if (el !== list) {
+          el.classList.remove('show');
+        }
+      });
+      list.classList.toggle('show');
+    }
+
+    // Close action menus when clicking anywhere else on the window
+    window.onclick = e => {
+      if (!e.target.matches('.action-button') && !e.target.closest('.action-list')) {
+        document.querySelectorAll('.action-list.show').forEach(el => el.classList.remove('show'));
+      }
+    };
+
+    // --- Share Function (Example: WhatsApp) ---
+    function shareToWhatsApp(title, videoUrl) {
+        const message = encodeURIComponent(`Check out "${title}" on HOLY SCREEN: ${videoUrl}`);
+        window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+    }
+
+    // --- Favorites (Basic implementation for now) ---
+    function addToFavorites(title) {
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        if (!favorites.includes(title)) {
+            favorites.push(title);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            alert(`"${title}" added to your favorites!`);
+        } else {
+            alert(`"${title}" is already in your favorites.`);
+        }
+    }
+  </script>
+</body>
+</html>
