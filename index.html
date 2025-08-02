@@ -216,6 +216,47 @@
       color: #fff; padding: 12px; border-radius: 8px; font-size: 16px;
       box-shadow: 0 0 10px var(--accent-color); transition: .3s; display: block;
     }
+    .social-signin-button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: background-color 0.3s ease;
+    }
+    .google-signin-button {
+        background-color: #4285F4;
+        color: white;
+    }
+    .google-signin-button:hover {
+        background-color: #357ae8;
+    }
+    .phone-signin-button {
+        background-color: #25D366; /* WhatsApp green */
+        color: white;
+    }
+    .phone-signin-button:hover {
+        background-color: #1DA851;
+    }
+    .anonymous-signin-button {
+        background-color: #555;
+        color: white;
+    }
+    .anonymous-signin-button:hover {
+        background-color: #333;
+    }
+    #recaptcha-container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
 
     .settings-container {
       display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
@@ -287,13 +328,12 @@
     <div class="search-container">
       <input id="searchInput" placeholder="Search videos..." onkeyup="searchVideos()" />
     </div>
-    <a id="profileBtn" href="javascript:void(0)" onclick="openSettings()" style="display:none;"></a>
+    <a id="profileBtn" href="javascript:void(0)" onclick="openSettings()" style="visibility: hidden; pointer-events: none;"></a>
   </header>
 <main class="container" id="library">
   <div class="section-title">HOLY SCREEN Movie Library</div>
   <div class="video-grid">
   
-    <!-- JESUS – Tshivenda -->
     <div class="video-card" onclick="logWatched('JESUS – Tshivenda')">
       <iframe data-quality
               src="https://www.youtube.com/embed/LJLxjhQIXNU?rel=0"
@@ -310,7 +350,6 @@
       </div>
     </div>
 
-    <!-- JESUS – Sepedi -->
     <div class="video-card" onclick="logWatched('JESUS – Sepedi')">
       <iframe data-quality
               src="https://www.youtube.com/embed/Jh921zkJpfc?rel=0"
@@ -327,7 +366,6 @@
       </div>
     </div>
 
-    <!-- JESUS – Tsonga -->
     <div class="video-card" onclick="logWatched('JESUS – Tsonga')">
       <iframe data-quality
               src="https://www.youtube.com/embed/-5LRQbzzDuc?rel=0"
@@ -344,7 +382,6 @@
       </div>
     </div>
 
-    <!-- JESUS – Zulu -->
     <div class="video-card" onclick="logWatched('JESUS – Zulu')">
       <iframe data-quality
               src="https://www.youtube.com/embed/9jE6KFiQouY?rel=0"
@@ -361,7 +398,6 @@
       </div>
     </div>
 
-    <!-- JESUS – Xhosa -->
     <div class="video-card" onclick="logWatched('JESUS – Xhosa')">
       <iframe data-quality
               src="https://www.youtube.com/embed/zd7yaTYKgQ4?rel=0"
@@ -378,7 +414,6 @@
       </div>
     </div>
 
-    <!-- JESUS – Afrikaans -->
     <div class="video-card" onclick="logWatched('JESUS – Afrikaans')">
       <iframe data-quality
               src="https://www.youtube.com/embed/pmlr5qgEXQg?rel=0"
@@ -395,7 +430,6 @@
       </div>
     </div>
 
-    <!-- JESUS – Setswana -->
     <div class="video-card" onclick="logWatched('JESUS – Setswana')">
       <iframe data-quality
               src="https://www.youtube.com/embed/uc39r9o87jo?rel=0"
@@ -412,7 +446,6 @@
       </div>
     </div>
 
-    <!-- JESUS – Sesotho -->
     <div class="video-card" onclick="logWatched('JESUS – Sesotho')">
       <iframe data-quality
               src="https://www.youtube.com/embed/2YibcWSHww4?rel=0"
@@ -429,7 +462,6 @@
       </div>
     </div>
 
-    <!-- Gospel of John -->
     <div class="video-card" onclick="logWatched('Gospel of John')">
       <iframe data-quality
               src="https://www.youtube.com/embed/-k0D_qFPb4o?rel=0"
@@ -446,7 +478,6 @@
       </div>
     </div>
 
-    <!-- Gospel of Matthew -->
     <div class="video-card" onclick="logWatched('Gospel of Matthew')">
       <iframe data-quality
               src="https://www.youtube.com/embed/2ErTneBIJJs?rel=0"
@@ -458,12 +489,11 @@
           <li onclick="addToPlaylist('Gospel of Matthew')">Add to Playlist</li>
           <li onclick="addToFavorites('Gospel of Matthew')">Favorite</li>
           <li onclick="shareToWhatsApp('Gospel of Matthew','https://youtu.be/2ErTneBIJJs')">Share</li>
-          <li onclick="toggleFullScreen(this.closest('.video-card'))">? Fullscreen</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))"> Fullscreen</li>
         </ul>
       </div>
     </div>
 
-    <!-- Gospel of Mark -->
     <div class="video-card" onclick="logWatched('Gospel of Mark')">
       <iframe data-quality
               src="https://www.youtube.com/embed/rh9yjReuWH0?rel=0"
@@ -480,7 +510,6 @@
       </div>
     </div>
 
-    <!-- Gospel of Luke -->
     <div class="video-card" onclick="logWatched('Gospel of Luke')">
       <iframe data-quality
               src="https://www.youtube.com/embed/klzda4dYqio?rel=0"
@@ -497,7 +526,6 @@
       </div>
     </div>
 
-    <!-- Magdalena – A Jesus Story -->
     <div class="video-card" onclick="logWatched('Magdalena – A Jesus Story')">
       <iframe data-quality
               src="https://www.youtube.com/embed/BXWH0PNccbk?rel=0"
@@ -514,7 +542,6 @@
       </div>
     </div>
 
-    <!-- Moses (1995) -->
     <div class="video-card" onclick="logWatched('Moses (1995)')">
       <iframe data-quality
               src="https://www.youtube.com/embed/KX83ed0Tg6g?rel=0"
@@ -531,7 +558,6 @@
       </div>
     </div>
 
-    <!-- Moses and Exodus -->
     <div class="video-card" onclick="logWatched('Moses and Exodus')">
       <iframe data-quality
               src="https://www.youtube.com/embed/RnmBUpofgpY?rel=0"
@@ -548,7 +574,6 @@
       </div>
     </div>
 
-    <!-- Abraham and Sarah – Great People of the Bible -->
     <div class="video-card" onclick="logWatched('Abraham and Sarah – Great People of the Bible')">
       <iframe data-quality
               src="https://www.youtube.com/embed/_f_jJ2sG24A?rel=0"
@@ -565,7 +590,6 @@
       </div>
     </div>
 
-    <!-- Genesis – Abraham (KJV) -->
     <div class="video-card" onclick="logWatched('Genesis – Abraham (KJV)')">
       <iframe data-quality
               src="https://www.youtube.com/embed/JZoQZw22nGo?rel=0&start=587"
@@ -582,7 +606,6 @@
       </div>
     </div>
 
-    <!-- Book of Genesis -->
     <div class="video-card" onclick="logWatched('Book of Genesis')">
       <iframe data-quality
               src="https://www.youtube.com/embed/JMde2CS7NFc?rel=0&start=587"
@@ -599,7 +622,6 @@
       </div>
     </div>
 
-    <!-- Story of Ruth -->
     <div class="video-card" onclick="logWatched('Story of Ruth')">
       <iframe data-quality
               src="https://www.youtube.com/embed/kW5WyJ1QNpM?rel=0"
@@ -611,7 +633,7 @@
           <li onclick="addToPlaylist('Story of Ruth')">Add to Playlist</li>
           <li onclick="addToFavorites('Story of Ruth')">Favorite</li>
           <li onclick="shareToWhatsApp('Story of Ruth','https://youtu.be/kW5WyJ1QNpM')">Share</li>
-          <li onclick="toggleFullScreen(this.closest('.video-card'))"Fullscreen</li>
+          <li onclick="toggleFullScreen(this.closest('.video-card'))">Fullscreen</li>
         </ul>
       </div>
     </div>
@@ -626,7 +648,26 @@
       <input id="signInEmail" type="email" placeholder="Email" required />
       <label for="signInPassword">Password</label>
       <input id="signInPassword" type="password" placeholder="Password" required />
-      <button class="glow-button" onclick="submitSignIn()">Sign In</button>
+      <button class="glow-button" onclick="submitSignIn()">Sign In with Email</button>
+      <p style="text-align:center; margin: 15px 0;">-- OR --</p>
+
+      <button class="social-signin-button google-signin-button" onclick="signInWithGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" style="width: 20px; height: 20px; margin-right: 8px;">
+        Sign in with Google
+      </button>
+
+      <label for="phoneNumber">Phone Number</label>
+      <input id="phoneNumber" type="tel" placeholder="+27 12 345 6789" />
+      <button class="social-signin-button phone-signin-button" onclick="sendVerificationCode()">Send Code</button>
+      
+      <div id="recaptcha-container"></div>
+      
+      <label for="verificationCode">Verification Code</label>
+      <input id="verificationCode" type="text" placeholder="Enter verification code" />
+      <button class="glow-button" onclick="verifyPhoneNumber()">Verify Code</button>
+
+      <button class="social-signin-button anonymous-signin-button" onclick="signInAnonymously()">Sign in Anonymously</button>
+
       <p><a href="javascript:void(0)" onclick="openSignUpPage()">Need an account? Sign Up</a></p>
       <button class="glow-button" onclick="goHome()">Back to Library</button>
       <div id="signInMessage"></div>
@@ -731,7 +772,6 @@
       <input type="color" id="accentColor" value="#ff3300">
       <button onclick="setAccentColor()">Apply</button>
 
-
       <h2>Accessibility</h2>
       <label style="grid-column:span 2;">
         <input type="checkbox" id="closedCaptions" /> Enable Closed Captions (CC)
@@ -744,7 +784,6 @@
       </select>
       <button onclick="saveAccessibility()">Save Accessibility</button>
 
-
       <h2>Account Management</h2>
       <label for="currentPassword">Current Password</label>
       <input type="password" id="currentPassword" placeholder="Current Password">
@@ -753,616 +792,1006 @@
       <button onclick="changePassword()">Change Password</button>
       <button class="glow-button" onclick="deleteAccount()" style="grid-column:span 2; background:#cc0000;">Delete Account</button>
 
-
       <h2>Advanced</h2>
       <button onclick="clearCache()">Clear Cache</button>
       <button onclick="resetAllSettings()">Reset All Settings</button>
-
-
       <button class="glow-button" onclick="goHome()" style="grid-column:span 2;">Back to Library</button>
       <div id="generalSettingsMsg"></div>
     </div>
   </section>
 
-  <footer>© 2025 HOLY SCREEN</footer>
+  <footer>
+    © 2025 HOLY SCREEN
+    <div class="social-links" style="margin-top: 20px;">
+      <p>Follow Us On:</p>
+      <a href="https://www.facebook.com/share/166PoxSiwn/" target="_blank" style="color: #fff; text-decoration: none; margin: 0 10px; font-weight: bold;">Facebook</a>
+      <a href="https://www.instagram.com/holyscreen69?igsh=MTUzbXR6MHR5Nzgydw==" target="_blank" style="color: #fff; text-decoration: none; margin: 0 10px; font-weight: bold;">Instagram</a>
+      <a href="https://vm.tiktok.com/ZSSYwh2kP/" target="_blank" style="color: #fff; text-decoration: none; margin: 0 10px; font-weight: bold;">TikTok</a>
+    </div>
+  </footer>
 
-  <script>
-    // --- Global Variables & Initial Setup ---
-    let breakTimer;
-    let bedtimeInterval;
+  <script type="module">
+    // Firebase SDK Imports (using v10.11.0 as a stable version)
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js'; // Optional, but good for tracking
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged, 
+      signOut,
+      GoogleAuthProvider, // Added for Google Sign-In
+      signInWithPopup,    // Added for Google Sign-In
+      PhoneAuthProvider,  // Added for Phone Sign-In
+      signInWithPhoneNumber, // Added for Phone Sign-In
+      RecaptchaVerifier,  // Added for Phone Sign-In (reCAPTCHA)
+      signInAnonymously   // Added for Anonymous Sign-In
+    } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js';
 
-    // Detect system theme on first visit and apply it
-    if (!localStorage.getItem('theme')) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      localStorage.setItem('theme', prefersDark ? 'dark' : 'light');
-    }
+    // YOUR FIREBASE CONFIG GOES HERE
+    // Replace this with your actual Firebase project configuration from the Firebase Console
+    const firebaseConfig = {
+      apiKey: "AIzaSyDaiir1Mev5uquTvWmTwoC6VYvn0Gd_LmM", // Your actual API Key
+      authDomain: "holy-screen-auth.firebaseapp.com", // Your actual Auth Domain
+      projectId: "holy-screen-auth", // Your actual Project ID
+      storageBucket: "holy-screen-auth.firebasestorage.app", // Your actual Storage Bucket
+      messagingSenderId: "196821482243", // Your actual Messaging Sender ID
+      appId: "1:196821482243:web:0b9f3c2cb8397ebac64736", // Your actual App ID
+      measurementId: "G-E9NFY5D1TJ" // Your actual Measurement ID (if using Analytics)
+    };
 
-    // Function to run when the page loads
-    function initPage() {
-      // Apply dark mode if saved
-      if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+    // Initialize Firebase and get service instances
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app); // Initialize analytics
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
-      // Update UI based on login status
-      if (localStorage.getItem('loggedIn') === 'true') {
-        document.getElementById('profileBtn').style.display = 'block';
-        document.getElementById('profileNameDisplay').innerText = localStorage.getItem('profileName') || localStorage.getItem('email');
-        document.getElementById('profileStatus').innerText = 'Signed In';
+    // Global variable to hold the current logged-in user
+    let currentUser = null;
+    let confirmationResult = null; // To store the result of phone verification
+
+    // --- UI State Management (Reflects Auth State) ---
+    function updateUIForAuthState(user) {
+      const profileBtn = document.getElementById('profileBtn');
+      const profileNameDisplay = document.getElementById('profileNameDisplay');
+      const profileStatus = document.getElementById('profileStatus');
+      const userPhoto = document.getElementById('userPhoto');
+
+      // Sidebar menu items (adjust selectors if your HTML structure is different)
+      const signInMenuItem = document.querySelector('.sidebar li:nth-child(2)'); // Assumes "Sign In" is 2nd li
+      const signUpMenuItem = document.querySelector('.sidebar li:nth-child(3)'); // Assumes "Sign Up" is 3rd li
+      const signOutMenuItem = document.querySelector('.sidebar li:nth-child(6)'); // Assumes "Sign Out" is 6th li
+
+      if (user) {
+        currentUser = user;
+        profileBtn.style.visibility = 'visible'; // Keep button space, just change visibility
+        profileBtn.style.pointerEvents = 'auto'; // Make it clickable
+        profileNameDisplay.textContent = user.displayName || user.email || 'User';
+        profileStatus.textContent = 'Signed In';
+        userPhoto.src = user.photoURL || 'https://via.placeholder.com/80'; // Default photo if none
+
+        // Hide Sign In/Sign Up, show Sign Out
+        if (signInMenuItem) signInMenuItem.style.display = 'none';
+        if (signUpMenuItem) signUpMenuItem.style.display = 'none';
+        if (signOutMenuItem) signOutMenuItem.style.display = 'list-item';
+
+        // Load user-specific data from Firestore
+        loadUserDataToSettingsPage(user.uid);
+      } else {
+        currentUser = null;
+        profileBtn.style.visibility = 'hidden'; // Keep button space, just change visibility
+        profileBtn.style.pointerEvents = 'none'; // Make it unclickable
+        profileNameDisplay.textContent = 'Guest';
+        profileStatus.textContent = 'Guest';
+        userPhoto.src = 'https://via.placeholder.com/80'; // Reset to default photo
+
+        // Show Sign In/Sign Up, hide Sign Out
+        if (signInMenuItem) signInMenuItem.style.display = 'list-item';
+        if (signUpMenuItem) signUpMenuItem.style.display = 'list-item';
+        if (signOutMenuItem) signOutMenuItem.style.display = 'none';
+
+        // Clear any user-specific data displayed on settings page
+        clearSettingsPageUI();
       }
-
-      // Apply video quality from saved settings
-      applyVideoQuality();
-      // Load all saved settings to their respective controls
-      loadSettings();
-      // Start checking for bedtime reminder
-      setupBedtimeReminderCheck();
     }
 
-    // Helper to apply video quality to iframes (if any)
-    function applyVideoQuality() {
-      const q = localStorage.getItem('videoQuality');
-      const iframes = document.querySelectorAll('iframe[data-quality]');
-      if (!q || q === 'default') {
-          // If default, remove specific quality parameters if they were set
-          iframes.forEach(f => {
-              let url = new URL(f.src);
-              url.searchParams.delete('vq');
-              url.searchParams.set('rel', '0'); // Ensure 'rel=0' is always there for YouTube
-              f.src = url.toString();
-          });
-          return;
-      }
+    // Function to load user data from Firestore and populate settings page
+    async function loadUserDataToSettingsPage(uid) {
+      const userDocRef = doc(db, "users", uid);
+      try {
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          // Populate settings fields
+          document.getElementById('languageInput').value = userData.language || '';
+          document.getElementById('qualitySelect').value = userData.quality || 'default';
+          document.getElementById('emailNotifications').checked = userData.emailNotifications || false;
+          document.getElementById('pushNotifications').checked = userData.pushNotifications || false;
+          document.getElementById('dataSharing').checked = userData.dataSharing || false;
+          document.getElementById('personalizedContent').checked = userData.personalizedContent || false;
+          document.getElementById('fontSize').value = userData.fontSize || 'medium';
+          document.getElementById('accentColor').value = userData.accentColor || '#ff3300';
+          document.getElementById('closedCaptions').checked = userData.closedCaptions || false;
+          document.getElementById('captionSize').value = userData.captionSize || 'medium';
 
-      iframes.forEach(f => {
-        let url = new URL(f.src);
-        url.searchParams.set('rel', '0'); // Ensure 'rel=0' for YouTube
-        if (q === 'hd') url.searchParams.set('vq', 'hd720');
-        if (q === 'fullhd') url.searchParams.set('vq', 'hd1080');
-        if (q === 'low') url.searchParams.set('vq', 'small'); // 'small' for 240p/360p
-        f.src = url.toString();
-      });
-    }
+          // Update profile name display if available from Firestore (more persistent)
+          if (userData.displayName) {
+              document.getElementById('profileNameDisplay').textContent = userData.displayName;
+          }
+          if (userData.photoURL) {
+              document.getElementById('userPhoto').src = userData.photoURL;
+          }
 
-    // Loads all saved settings from localStorage and applies them to the UI elements
-    function loadSettings() {
-        // Profile Photo
-        loadProfilePhoto();
-        // Profile Name
-        document.getElementById('profileNameDisplay').innerText = localStorage.getItem('profileName') || localStorage.getItem('email') || 'Guest';
+          // Populate watch history
+          const historyList = document.getElementById('historyList');
+          historyList.innerHTML = ''; // Clear existing
+          if (userData.watchHistory && userData.watchHistory.length > 0) {
+            userData.watchHistory.forEach(item => {
+              const li = document.createElement('li');
+              li.textContent = item;
+              historyList.appendChild(li);
+            });
+          } else {
+            const li = document.createElement('li');
+            li.textContent = 'No history yet';
+            historyList.appendChild(li);
+          }
 
-        // Language
-        document.getElementById('languageInput').value = localStorage.getItem('preferredLanguage') || '';
-        // Quality
-        document.getElementById('qualitySelect').value = localStorage.getItem('videoQuality') || 'default';
+          // Populate playlists
+          const playlistsView = document.getElementById('playlistsView');
+          playlistsView.innerHTML = '';
+          if (userData.playlists && Object.keys(userData.playlists).length > 0) {
+              for (const playlistName in userData.playlists) {
+                  const playlistDiv = document.createElement('div');
+                  playlistDiv.innerHTML = `<h3>${playlistName}</h3><ul style="list-style:none; padding:0;"></ul>`;
+                  const ul = playlistDiv.querySelector('ul');
+                  userData.playlists[playlistName].forEach(videoTitle => {
+                      const li = document.createElement('li');
+                      li.textContent = videoTitle;
+                      ul.appendChild(li);
+                  });
+                  playlistsView.appendChild(playlistDiv);
+              }
+          } else {
+              playlistsView.textContent = 'No playlists created yet.';
+          }
 
-        // Notifications (checkboxes use 'true'/'false' strings)
-        document.getElementById('emailNotifications').checked = localStorage.getItem('emailNotifications') === 'true';
-        document.getElementById('pushNotifications').checked = localStorage.getItem('pushNotifications') === 'true';
 
-        // Privacy
-        document.getElementById('dataSharing').checked = localStorage.getItem('dataSharing') === 'true';
-        document.getElementById('personalizedContent').checked = localStorage.getItem('personalizedContent') === 'true';
-
-        // Display
-        document.getElementById('fontSize').value = localStorage.getItem('fontSize') || 'medium';
-        document.documentElement.style.setProperty('--main-font-size', getFontSizeValue(localStorage.getItem('fontSize')));
-        document.getElementById('accentColor').value = localStorage.getItem('accentColor') || '#ff3300';
-        document.documentElement.style.setProperty('--accent-color', localStorage.getItem('accentColor') || '#ff3300');
-
-        // Accessibility
-        document.getElementById('closedCaptions').checked = localStorage.getItem('closedCaptions') === 'true';
-        document.getElementById('captionSize').value = localStorage.getItem('captionSize') || 'medium';
-
-        // Reminders
-        document.getElementById('breakMinutes').value = localStorage.getItem('breakMinutes') || '';
-        document.getElementById('bedtimeInput').value = localStorage.getItem('bedtime') || '';
-    }
-
-    // Helper to get font size value for CSS variable
-    function getFontSizeValue(size) {
-        switch(size) {
-            case 'small': return '14px';
-            case 'large': return '18px';
-            default: return '16px';
         }
+      } catch (error) {
+        console.error("Error loading user data:", error);
+      }
     }
 
-    // --- Sidebar & Navigation ---
-    const sidebar = document.getElementById('sidebar'),
-          menuToggle = document.getElementById('menuToggle'),
-          closeSidebar = document.getElementById('closeSidebar');
+    // Function to clear user-specific data displayed on settings page
+    function clearSettingsPageUI() {
+      document.getElementById('languageInput').value = '';
+      document.getElementById('qualitySelect').value = 'default';
+      document.getElementById('emailNotifications').checked = false;
+      document.getElementById('pushNotifications').checked = false;
+      document.getElementById('dataSharing').checked = false;
+      document.getElementById('personalizedContent').checked = false;
+      document.getElementById('fontSize').value = 'medium';
+      document.getElementById('accentColor').value = '#ff3300';
+      document.getElementById('closedCaptions').checked = false;
+      document.getElementById('captionSize').value = 'medium';
 
-    menuToggle.onclick = e => { e.stopPropagation(); sidebar.classList.toggle('active'); };
-    closeSidebar.onclick = () => sidebar.classList.remove('active');
-    document.addEventListener('click', e => {
-      if (sidebar.classList.contains('active') &&
-          !sidebar.contains(e.target) &&
-          e.target !== menuToggle) {
-        sidebar.classList.remove('active');
-      }
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = '<li>No history yet</li>';
+
+      const playlistsView = document.getElementById('playlistsView');
+      playlistsView.innerHTML = '';
+    }
+
+    // Listen for authentication state changes
+    onAuthStateChanged(auth, (user) => {
+      updateUIForAuthState(user);
     });
 
-    function hideAll() {
-      ['library','signInPage','signUpPage','settingsPage'].forEach(id => {
-        document.getElementById(id).style.display = 'none';
-      });
-    }
-    function showLibrary() { hideAll(); document.getElementById('library').style.display = 'block'; }
-    function openSignInPage() { hideAll(); document.getElementById('signInPage').style.display = 'block'; }
-    function openSignUpPage() { hideAll(); document.getElementById('signUpPage').style.display = 'block'; }
-    function openSettings() {
-      hideAll();
-      document.getElementById('settingsPage').style.display = 'block';
-      // Ensure profile info is up-to-date when opening settings
-      document.getElementById('profileNameDisplay').innerText = localStorage.getItem('profileName') || localStorage.getItem('email') || 'Guest';
-      document.getElementById('profileStatus').innerText = localStorage.getItem('loggedIn') === 'true' ? 'Signed In' : 'Guest';
-      loadProfilePhoto();
-      renderWatchHistory();
-      renderPlaylists();
-      loadSettings(); // Ensure all settings controls reflect saved state
-    }
-    function goHome() { showLibrary(); }
+    // --- Authentication Functions (Email/Password) ---
+    async function submitSignIn() {
+      const email = document.getElementById('signInEmail').value;
+      const password = document.getElementById('signInPassword').value;
+      const signInMessage = document.getElementById('signInMessage');
 
-    // --- Authentication ---
-    function submitSignIn() {
-      const e = document.getElementById('signInEmail').value.trim(),
-            p = document.getElementById('signInPassword').value.trim(),
-            m = document.getElementById('signInMessage');
-      if (!e || p.length < 6 || localStorage.getItem(e) !== p) {
-        m.innerText = 'Invalid email or password.'; return;
-      }
-      localStorage.setItem('loggedIn','true');
-      localStorage.setItem('email', e);
-      // If no profile name set, use email as default
-      if (!localStorage.getItem('profileName')) {
-          localStorage.setItem('profileName', e.split('@')[0]); // Use part before @
-      }
-      m.innerText = 'Signed in successfully!';
-      document.getElementById('profileBtn').style.display = 'block';
-      setTimeout(goHome, 800);
-    }
-
-    function submitSignUp() {
-      const e = document.getElementById('signUpEmail').value.trim(),
-            p = document.getElementById('signUpPassword').value.trim(),
-            c = document.getElementById('signUpConfirm').value.trim(),
-            m = document.getElementById('signUpMessage');
-      if (!e || p.length < 6 || p !== c) {
-        m.innerText = 'Please enter a valid email and ensure passwords match (min 6 chars).'; return;
-      }
-      if (localStorage.getItem(e)) {
-        m.innerText = 'This email is already registered.'; return;
-      }
-      localStorage.setItem(e, p); // Store email as key, password as value
-      localStorage.setItem('profileName', e.split('@')[0]); // Set initial profile name
-      m.innerText = 'Account created successfully! Please sign in.';
-      setTimeout(openSignInPage, 800);
-    }
-
-    function signOut() {
-      localStorage.removeItem('loggedIn');
-      localStorage.removeItem('email');
-      document.getElementById('profileBtn').style.display = 'none';
-      alert('You have been signed out.');
-      goHome();
-    }
-
-    // --- Profile Management ---
-    function saveProfilePhoto(input) {
-      const file = input.files[0];
-      if (!file) return;
-
-      // Limit file size (e.g., 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-          alert('Photo is too large. Max size is 2MB.');
-          return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const photoURL = e.target.result;
-        document.getElementById('userPhoto').src = photoURL;
-        localStorage.setItem('profilePhoto', photoURL);
-        alert('Profile photo updated!');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function loadProfilePhoto() {
-      const photo = localStorage.getItem('profilePhoto');
-      if (photo) {
-        document.getElementById('userPhoto').src = photo;
-      } else {
-        document.getElementById('userPhoto').src = 'https://via.placeholder.com/60'; // Default small placeholder
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        signInMessage.textContent = 'Signed in successfully!';
+        signInMessage.style.color = 'green';
+        goHome(); // Redirect to library on successful sign-in
+      } catch (error) {
+        signInMessage.textContent = `Sign in failed: ${error.message}`;
+        signInMessage.style.color = 'red';
+        console.error("Sign In Error:", error);
       }
     }
 
-    function editProfileName() {
-        const currentName = localStorage.getItem('profileName') || localStorage.getItem('email').split('@')[0] || 'Guest';
-        const newName = prompt('Enter your new profile name:', currentName);
-        if (newName !== null && newName.trim() !== '') {
-            localStorage.setItem('profileName', newName.trim());
-            document.getElementById('profileNameDisplay').innerText = newName.trim();
-            alert('Profile name updated!');
-        } else if (newName !== null) {
-            alert('Profile name cannot be empty.');
-        }
-    }
+    async function submitSignUp() {
+      const email = document.getElementById('signUpEmail').value;
+      const password = document.getElementById('signUpPassword').value;
+      const confirmPassword = document.getElementById('signUpConfirm').value;
+      const signUpMessage = document.getElementById('signUpMessage');
 
-    // --- Watch History & Playlists ---
-    function logWatched(title) {
-      const arr = JSON.parse(localStorage.getItem('watchHistory') || '[]');
-      // Check if video is already in history, remove it to add at top
-      const existingIndex = arr.findIndex(item => item.title === title);
-      if (existingIndex > -1) {
-          arr.splice(existingIndex, 1);
+      if (password !== confirmPassword) {
+        signUpMessage.textContent = 'Passwords do not match.';
+        signUpMessage.style.color = 'red';
+        return;
       }
-      arr.push({ title, time: new Date().toLocaleString() });
-      localStorage.setItem('watchHistory', JSON.stringify(arr));
-      renderWatchHistory(); // Update history display
-    }
-
-    function renderWatchHistory() {
-      const arr = JSON.parse(localStorage.getItem('watchHistory') || '[]');
-      const ul = document.getElementById('historyList');
-      ul.innerHTML = arr.length ? '' : '<li>No history yet</li>';
-      // Display last 5 watched, most recent first
-      arr.slice(-5).reverse().forEach(it => {
-        const li = document.createElement('li');
-        li.innerText = `${it.title} @ ${it.time}`;
-        ul.append(li);
-      });
-    }
-
-    function clearHistory() {
-      if (confirm('Are you sure you want to clear your entire watch history?')) {
-        localStorage.removeItem('watchHistory');
-        renderWatchHistory();
-        alert('Watch history cleared!');
-      }
-    }
-
-    function createPlaylist() {
-      const name = document.getElementById('playlistName').value.trim();
-      const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
-      if (!name) { alert('Please enter a name for your playlist.'); return; }
-      if (lists[name]) { alert('A playlist with this name already exists. Please choose a different name.'); return; }
-      lists[name] = []; // Initialize as empty array
-      localStorage.setItem('playlists', JSON.stringify(lists));
-      document.getElementById('playlistName').value = '';
-      renderPlaylists();
-      alert(`Playlist "${name}" created successfully!`);
-    }
-
-    function renderPlaylists() {
-      const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
-      const view = document.getElementById('playlistsView');
-      view.innerHTML = Object.keys(lists).length ? '' : '<p>No playlists created yet.</p>';
-      Object.keys(lists).forEach(key => {
-        const div = document.createElement('div');
-        div.innerHTML = `<strong>${key}</strong> (${lists[key].length} videos) <button onclick="deletePlaylist('${key}'); event.stopPropagation();">Delete</button>`;
-        view.append(div);
-      });
-    }
-
-    function deletePlaylist(name) {
-        if (confirm(`Are you sure you want to delete the playlist "${name}"? This cannot be undone.`)) {
-            const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
-            delete lists[name];
-            localStorage.setItem('playlists', JSON.stringify(lists));
-            renderPlaylists();
-            alert(`Playlist "${name}" deleted.`);
-        }
-    }
-
-    function addToPlaylist(title) {
-      const lists = JSON.parse(localStorage.getItem('playlists') || '{}');
-      const playlistNames = Object.keys(lists);
-
-      if (playlistNames.length === 0) {
-        alert('You haven\'t created any playlists yet. Please create one in settings first.');
+      if (password.length < 6) {
+        signUpMessage.textContent = 'Password must be at least 6 characters long.';
+        signUpMessage.style.color = 'red';
         return;
       }
 
-      // Prompt for playlist selection
-      const chosen = prompt(`Add "${title}" to which playlist?\nAvailable: ${playlistNames.join(', ')}\n(Enter playlist name):`);
-
-      if (chosen === null || chosen.trim() === '') return; // User cancelled or entered empty string
-
-      if (lists[chosen]) {
-        if (!lists[chosen].includes(title)) { // Prevent duplicates
-            lists[chosen].push(title);
-            localStorage.setItem('playlists', JSON.stringify(lists));
-            alert(`"${title}" added to "${chosen}"!`);
-            renderPlaylists(); // Update count in settings view
-        } else {
-            alert(`"${title}" is already in "${chosen}".`);
-        }
-      } else {
-        alert(`Playlist "${chosen}" not found. Please enter an existing playlist name from the list.`);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // Create a user document in Firestore
+        await setDoc(doc(db, "users", userCredential.user.uid), {
+          email: userCredential.user.email,
+          createdAt: new Date(),
+          // Initialize other user settings here if needed
+          watchHistory: [],
+          playlists: {}
+        });
+        signUpMessage.textContent = 'Account created successfully! You are now signed in.';
+        signUpMessage.style.color = 'green';
+        goHome(); // Redirect to library on successful sign-up
+      } catch (error) {
+        signUpMessage.textContent = `Sign up failed: ${error.message}`;
+        signUpMessage.style.color = 'red';
+        console.error("Sign Up Error:", error);
       }
     }
 
-    // This is still a placeholder for a more complex UI
-    function managePlaylists() {
-        alert('This feature would open a detailed playlist management page where you can reorder, rename, or remove videos from playlists. (Not fully implemented in this demo)');
-    }
-
-    // --- Reminders ---
-    function startBreakReminder() {
-      const m = parseInt(document.getElementById('breakMinutes').value);
-      const reminderMsg = document.getElementById('reminderMessage');
-      if (isNaN(m) || m < 1) {
-        reminderMsg.innerText = 'Please enter a valid number of minutes (1 or more) for your break reminder.';
-        return;
-      }
-      clearTimeout(breakTimer); // Clear any previous timer
-      breakTimer = setTimeout(() => {
-        alert('Time for a break! Take a moment to rest your eyes.');
-        reminderMsg.innerText = ''; // Clear message after reminder
-      }, m * 60000); // Convert minutes to milliseconds
-      localStorage.setItem('breakMinutes', m.toString()); // Save as string
-      reminderMsg.innerText = `Break reminder set for ${m} minutes.`;
-    }
-
-    function setBedtimeReminder() {
-      const t = document.getElementById('bedtimeInput').value;
-      const reminderMsg = document.getElementById('reminderMessage');
-      if (!t) {
-        reminderMsg.innerText = 'Please set a valid time for your bedtime reminder.';
-        return;
-      }
-      localStorage.setItem('bedtime', t);
-      reminderMsg.innerText = `Bedtime reminder set for ${t}.`;
-      setupBedtimeReminderCheck(); // Re-setup to ensure new time is picked up
-    }
-
-    function setupBedtimeReminderCheck() {
-      if (bedtimeInterval) {
-        clearInterval(bedtimeInterval); // Clear any existing interval
-      }
-      const bedtime = localStorage.getItem('bedtime');
-      if (bedtime) {
-        bedtimeInterval = setInterval(() => {
-          const [bedH, bedM] = bedtime.split(':').map(Number);
-          const now = new Date();
-          const currentH = now.getHours();
-          const currentM = now.getMinutes();
-
-          if (currentH === bedH && currentM === bedM) {
-            alert('It\'s bedtime! Time to unwind and rest for HOLY SCREEN.');
-            // Prevent multiple alerts within the same minute
-            clearInterval(bedtimeInterval);
-            // Re-check after 60 seconds to allow for minute roll-over
-            setTimeout(setupBedtimeReminderCheck, 60 * 1000);
-          }
-        }, 60 * 1000); // Check every minute
-      }
-    }
-
-    // --- Language & Video Quality ---
-    function setGlobalLanguage() {
-      const l = document.getElementById('languageInput').value.trim();
-      localStorage.setItem('preferredLanguage', l);
-      document.getElementById('generalSettingsMsg').innerText = l ? `Preferred language saved: ${l}` : 'Preferred language cleared.';
-    }
-
-    function saveQuality() {
-      const q = document.getElementById('qualitySelect').value;
-      localStorage.setItem('videoQuality', q);
-      applyVideoQuality(); // Re-apply quality to current videos
-      document.getElementById('qualityMsg').innerText = `Video quality set to: ${q}.`;
-    }
-
-    function toggleMode() {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('theme',
-        document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    }
-
-    // --- Notifications ---
-    function saveNotifications() {
-        localStorage.setItem('emailNotifications', document.getElementById('emailNotifications').checked);
-        localStorage.setItem('pushNotifications', document.getElementById('pushNotifications').checked);
-        document.getElementById('generalSettingsMsg').innerText = 'Notification settings saved!';
-    }
-
-    // --- Privacy ---
-    function savePrivacySettings() {
-        localStorage.setItem('dataSharing', document.getElementById('dataSharing').checked);
-        localStorage.setItem('personalizedContent', document.getElementById('personalizedContent').checked);
-        document.getElementById('generalSettingsMsg').innerText = 'Privacy settings saved!';
-    }
-
-    // --- Display ---
-    function setFontSize() {
-        const size = document.getElementById('fontSize').value;
-        document.documentElement.style.setProperty('--main-font-size', getFontSizeValue(size));
-        localStorage.setItem('fontSize', size);
-        document.getElementById('generalSettingsMsg').innerText = `Font size set to ${size}.`;
-    }
-
-    function setAccentColor() {
-        const color = document.getElementById('accentColor').value;
-        document.documentElement.style.setProperty('--accent-color', color);
-        localStorage.setItem('accentColor', color);
-        document.getElementById('generalSettingsMsg').innerText = `Accent color set to ${color}.`;
-    }
-
-    // --- Accessibility ---
-    function saveAccessibility() {
-        localStorage.setItem('closedCaptions', document.getElementById('closedCaptions').checked);
-        localStorage.setItem('captionSize', document.getElementById('captionSize').value);
-        document.getElementById('generalSettingsMsg').innerText = 'Accessibility settings saved!';
-    }
-
-    // --- Account Management ---
-    function changePassword() {
-        const currentP = document.getElementById('currentPassword').value;
-        const newP = document.getElementById('newPassword').value;
-        const email = localStorage.getItem('email');
-
-        if (!email || localStorage.getItem('loggedIn') !== 'true') {
-            alert('You must be signed in to change your password.');
-            return;
-        }
-
-        if (localStorage.getItem(email) !== currentP) {
-            alert('Current password is incorrect.');
-            return;
-        }
-
-        if (newP.length < 6) {
-            alert('New password must be at least 6 characters long.');
-            return;
-        }
-
-        localStorage.setItem(email, newP); // Update password in localStorage
-        alert('Password changed successfully!');
-        // Clear password fields
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-    }
-
-    function deleteAccount() {
-        if (!localStorage.getItem('loggedIn') === 'true' || !localStorage.getItem('email')) {
-            alert('No account is currently signed in to delete.');
-            return;
-        }
-
-        if (confirm('Are you absolutely sure you want to delete your account? This action cannot be undone and all your data (profile, history, playlists) will be lost.')) {
-            const email = localStorage.getItem('email');
-            if (email) {
-                // Remove all associated user data
-                localStorage.removeItem(email); // User's password
-                localStorage.removeItem('loggedIn');
-                localStorage.removeItem('email');
-                localStorage.removeItem('profileName');
-                localStorage.removeItem('profilePhoto');
-                localStorage.removeItem('watchHistory');
-                localStorage.removeItem('playlists');
-                localStorage.removeItem('favorites'); // If you add favorites later
-                localStorage.removeItem('preferredLanguage');
-                localStorage.removeItem('videoQuality');
-                localStorage.removeItem('emailNotifications');
-                localStorage.removeItem('pushNotifications');
-                localStorage.removeItem('dataSharing');
-                localStorage.removeItem('personalizedContent');
-                localStorage.removeItem('fontSize');
-                localStorage.removeItem('accentColor');
-                localStorage.removeItem('closedCaptions');
-                localStorage.removeItem('captionSize');
-                localStorage.removeItem('breakMinutes');
-                localStorage.removeItem('bedtime');
-                clearInterval(bedtimeInterval); // Stop bedtime reminder
-
-                alert('Your account and all associated data have been deleted.');
-                goHome(); // Redirect to library or welcome page
-                location.reload(); // Force a full reload to clear all state
-            }
-        }
-    }
-
-    // --- Advanced Settings ---
-    function clearCache() {
-        if (confirm('Are you sure you want to clear the local application cache? This will log you out and reset ALL your saved preferences and data.')) {
-            localStorage.clear(); // Clears everything in localStorage
-            alert('Cache cleared! You have been logged out and all settings reset. Please sign in again.');
-            location.reload(); // Reload the page to reset everything
-        }
-    }
-
-    function resetAllSettings() {
-        if (confirm('Are you sure you want to reset ALL settings to default? Your account, watch history, and playlists will be preserved, but all other preferences will be reset.')) {
-            // List of keys to keep (user session, history, playlists, profile photo)
-            const keptKeys = [
-                'loggedIn', 'email', 'profileName', 'profilePhoto',
-                'watchHistory', 'playlists', 'favorites' // Include favorites if you implement them
-            ];
-            const tempStorage = {};
-
-            // Temporarily store the values of the keys we want to keep
-            keptKeys.forEach(key => {
-                const value = localStorage.getItem(key);
-                if (value !== null) {
-                    tempStorage[key] = value;
-                }
-            });
-
-            localStorage.clear(); // Clear all current settings
-
-            // Restore the kept items
-            for (const key in tempStorage) {
-                localStorage.setItem(key, tempStorage[key]);
-            }
-
-            // Also stop reminders if they were active
-            clearTimeout(breakTimer);
-            clearInterval(bedtimeInterval);
-
-            alert('All non-account related settings have been reset to default.');
-            location.reload(); // Reload to apply default settings
-        }
-    }
-
-    // --- Video Specific Functions ---
-    // Search (Note: This function will only search the single video in this current demo)
-    function searchVideos() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const videoCard = document.querySelector('.video-card');
-      if (videoCard) {
-        const title = videoCard.querySelector('.video-title').innerText.toLowerCase();
-        videoCard.style.display = title.includes(q) ? 'block' : 'none';
-      }
-    }
-
-    // Fullscreen for video
-    function toggleFullScreen(el) {
-      const target = el.tagName === 'IFRAME' ? el : el.querySelector('iframe');
-      if (!document.fullscreenElement) {
-        target.requestFullscreen?.() ||
-        target.webkitRequestFullscreen?.() ||
-        target.mozRequestFullScreen?.();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-
-    // --- Action Menu (Video Card context menu) ---
-    function toggleMenu(btn) {
-      const list = btn.nextElementSibling;
-      // Close any other open action lists
-      document.querySelectorAll('.action-list.show').forEach(el => {
-        if (el !== list) {
-          el.classList.remove('show');
-        }
-      });
-      list.classList.toggle('show');
-    }
-
-    // Close action menus when clicking anywhere else on the window
-    window.onclick = e => {
-      if (!e.target.matches('.action-button') && !e.target.closest('.action-list')) {
-        document.querySelectorAll('.action-list.show').forEach(el => el.classList.remove('show'));
+    // Expose signOut to global scope
+    window.signOut = async function() {
+      try {
+        await auth.signOut();
+        alert('You have been signed out.');
+        // UI will be updated by onAuthStateChanged listener
+      } catch (error) {
+        console.error("Sign Out Error:", error);
+        alert(`Error signing out: ${error.message}`);
       }
     };
 
-    // --- Share Function (Example: WhatsApp) ---
-    function shareToWhatsApp(title, videoUrl) {
-        const message = encodeURIComponent(`Check out "${title}" on HOLY SCREEN: ${videoUrl}`);
-        window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+    // --- New Authentication Functions ---
+
+    // Google Sign-In
+    window.signInWithGoogle = async function() {
+      const provider = new GoogleAuthProvider();
+      const signInMessage = document.getElementById('signInMessage');
+      try {
+        const result = await signInWithPopup(auth, provider);
+        // The signed-in user info.
+        const user = result.user;
+        // Check if user document exists in Firestore, create if not
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (!userDocSnap.exists()) {
+            await setDoc(userDocRef, {
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                createdAt: new Date(),
+                watchHistory: [],
+                playlists: {}
+            });
+        }
+        signInMessage.textContent = 'Signed in with Google successfully!';
+        signInMessage.style.color = 'green';
+        goHome();
+      } catch (error) {
+        signInMessage.textContent = `Google Sign-in failed: ${error.message}`;
+        signInMessage.style.color = 'red';
+        console.error("Google Sign-in Error:", error);
+      }
+    };
+
+    // Phone Sign-In
+    // Initialize reCAPTCHA verifier
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        'size': 'normal', // or 'invisible'
+        'callback': (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            console.log('reCAPTCHA solved!');
+        },
+        'expired-callback': () => {
+            // Response expired. Ask user to solve reCAPTCHA again.
+            alert('reCAPTCHA expired. Please verify again.');
+            document.getElementById('signInMessage').textContent = 'reCAPTCHA expired. Please try again.';
+            document.getElementById('signInMessage').style.color = 'red';
+        }
+    });
+    recaptchaVerifier.render(); // Render the reCAPTCHA widget
+
+    window.sendVerificationCode = async function() {
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        const signInMessage = document.getElementById('signInMessage');
+        try {
+            // Ensure reCAPTCHA is rendered before sending code
+            if (!window.recaptchaVerifier) {
+                signInMessage.textContent = 'reCAPTCHA not initialized. Please refresh the page.';
+                signInMessage.style.color = 'red';
+                return;
+            }
+            confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+            signInMessage.textContent = 'Verification code sent to your phone!';
+            signInMessage.style.color = 'green';
+            // You might want to hide phone input and show code input here
+        } catch (error) {
+            signInMessage.textContent = `Failed to send code: ${error.message}`;
+            signInMessage.style.color = 'red';
+            console.error("Send Code Error:", error);
+        }
+    };
+
+    window.verifyPhoneNumber = async function() {
+        const verificationCode = document.getElementById('verificationCode').value;
+        const signInMessage = document.getElementById('signInMessage');
+        try {
+            if (!confirmationResult) {
+                signInMessage.textContent = 'Please send a verification code first.';
+                signInMessage.style.color = 'red';
+                return;
+            }
+            const result = await confirmationResult.confirm(verificationCode);
+            // User signed in successfully.
+            const user = result.user;
+            // Check if user document exists in Firestore, create if not
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
+            if (!userDocSnap.exists()) {
+                await setDoc(userDocRef, {
+                    phoneNumber: user.phoneNumber,
+                    createdAt: new Date(),
+                    watchHistory: [],
+                    playlists: {}
+                });
+            }
+            signInMessage.textContent = 'Phone number verified and signed in!';
+            signInMessage.style.color = 'green';
+            goHome();
+        } catch (error) {
+            signInMessage.textContent = `Failed to verify code: ${error.message}`;
+            signInMessage.style.color = 'red';
+            console.error("Verify Code Error:", error);
+        }
+    };
+
+    // Anonymous Sign-In
+    window.signInAnonymously = async function() {
+        const signInMessage = document.getElementById('signInMessage');
+        try {
+            const userCredential = await signInAnonymously(auth);
+            const user = userCredential.user;
+            // Check if user document exists in Firestore, create if not
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
+            if (!userDocSnap.exists()) {
+                await setDoc(userDocRef, {
+                    isAnonymous: true,
+                    createdAt: new Date(),
+                    watchHistory: [],
+                    playlists: {}
+                });
+            }
+            signInMessage.textContent = 'Signed in anonymously!';
+            signInMessage.style.color = 'green';
+            goHome();
+        } catch (error) {
+            signInMessage.textContent = `Anonymous sign-in failed: ${error.message}`;
+            signInMessage.style.color = 'red';
+            console.error("Anonymous Sign-in Error:", error);
+        }
+    };
+
+    // --- General UI Functions ---
+    window.initPage = function() {
+      // Any initialization logic can go here. onAuthStateChanged handles auth UI updates.
+      showLibrary(); // Default view
+    };
+
+    window.openSignInPage = function() {
+      document.getElementById('library').style.display = 'none';
+      document.getElementById('signUpPage').style.display = 'none';
+      document.getElementById('settingsPage').style.display = 'none';
+      document.getElementById('signInPage').style.display = 'block';
+    };
+
+    window.openSignUpPage = function() {
+      document.getElementById('library').style.display = 'none';
+      document.getElementById('signInPage').style.display = 'none';
+      document.getElementById('settingsPage').style.display = 'none';
+      document.getElementById('signUpPage').style.display = 'block';
+    };
+
+    window.openSettings = function() {
+      document.getElementById('library').style.display = 'none';
+      document.getElementById('signInPage').style.display = 'none';
+      document.getElementById('signUpPage').style.display = 'none';
+      document.getElementById('settingsPage').style.display = 'block';
+    };
+
+    window.goHome = function() {
+      document.getElementById('signInPage').style.display = 'none';
+      document.getElementById('signUpPage').style.display = 'none';
+      document.getElementById('settingsPage').style.display = 'none';
+      document.getElementById('library').style.display = 'block';
+    };
+
+    window.showLibrary = function() {
+      document.getElementById('signInPage').style.display = 'none';
+      document.getElementById('signUpPage').style.display = 'none';
+      document.getElementById('settingsPage').style.display = 'none';
+      document.getElementById('library').style.display = 'block';
+    };
+
+    // Toggle Sidebar Menu
+    document.getElementById('menuToggle').onclick = function() {
+      document.getElementById('sidebar').classList.add('active');
+    };
+    document.getElementById('closeSidebar').onclick = function() {
+      document.getElementById('sidebar').classList.remove('active');
+    };
+
+    // --- Video Search Functionality ---
+    window.searchVideos = function() {
+      const searchInput = document.getElementById('searchInput').value.toLowerCase();
+      const videoCards = document.querySelectorAll('.video-card');
+      videoCards.forEach(card => {
+        const title = card.querySelector('.video-title').textContent.toLowerCase();
+        if (title.includes(searchInput)) {
+          card.style.display = ''; // Show
+        } else {
+          card.style.display = 'none'; // Hide
+        }
+      });
+    };
+
+    // --- Local Storage & Settings Functions ---
+    window.toggleMode = function() {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+    };
+
+    // Apply saved mode on load
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
     }
 
-    // --- Favorites (Basic implementation for now) ---
-    function addToFavorites(title) {
-        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        if (!favorites.includes(title)) {
-            favorites.push(title);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            alert(`"${title}" added to your favorites!`);
-        } else {
-            alert(`"${title}" is already in your favorites.`);
-        }
+    // Function to set global language (placeholder for now)
+    window.setGlobalLanguage = function() {
+      const language = document.getElementById('languageInput').value;
+      alert(`Language set to: ${language}`);
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, { language: language }).then(() => {
+          document.getElementById('generalSettingsMsg').textContent = 'Language saved!';
+          document.getElementById('generalSettingsMsg').style.color = 'green';
+        }).catch(error => {
+          document.getElementById('generalSettingsMsg').textContent = `Error saving language: ${error.message}`;
+          document.getElementById('generalSettingsMsg').style.color = 'red';
+          console.error("Error updating document: ", error);
+        });
+      }
+    };
+
+    // Function to save video quality preference
+    window.saveQuality = function() {
+      const quality = document.getElementById('qualitySelect').value;
+      alert(`Video quality set to: ${quality}`);
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, { quality: quality }).then(() => {
+          document.getElementById('qualityMsg').textContent = 'Video quality saved!';
+          document.getElementById('qualityMsg').style.color = 'green';
+        }).catch(error => {
+          document.getElementById('qualityMsg').textContent = `Error saving quality: ${error.message}`;
+          document.getElementById('qualityMsg').style.color = 'red';
+          console.error("Error updating document: ", error);
+        });
+      }
+      // You might also want to dynamically change iframe sources or quality attributes here
+    };
+
+    // Function to save notification settings
+    window.saveNotifications = function() {
+      const emailNotifications = document.getElementById('emailNotifications').checked;
+      const pushNotifications = document.getElementById('pushNotifications').checked;
+      alert(`Email notifications: ${emailNotifications}, Push notifications: ${pushNotifications}`);
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, { emailNotifications, pushNotifications }).then(() => {
+          document.getElementById('generalSettingsMsg').textContent = 'Notification settings saved!';
+          document.getElementById('generalSettingsMsg').style.color = 'green';
+        }).catch(error => {
+          document.getElementById('generalSettingsMsg').textContent = `Error saving notifications: ${error.message}`;
+          document.getElementById('generalSettingsMsg').style.color = 'red';
+          console.error("Error updating document: ", error);
+        });
+      }
+    };
+
+    // Function to save privacy settings
+    window.savePrivacySettings = function() {
+      const dataSharing = document.getElementById('dataSharing').checked;
+      const personalizedContent = document.getElementById('personalizedContent').checked;
+      alert(`Data sharing: ${dataSharing}, Personalized content: ${personalizedContent}`);
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, { dataSharing, personalizedContent }).then(() => {
+          document.getElementById('generalSettingsMsg').textContent = 'Privacy settings saved!';
+          document.getElementById('generalSettingsMsg').style.color = 'green';
+        }).catch(error => {
+          document.getElementById('generalSettingsMsg').textContent = `Error saving privacy: ${error.message}`;
+          document.getElementById('generalSettingsMsg').style.color = 'red';
+          console.error("Error updating document: ", error);
+        });
+      }
+    };
+
+    // Function to set font size
+    window.setFontSize = function() {
+      const fontSize = document.getElementById('fontSize').value;
+      let sizeInPx;
+      if (fontSize === 'small') sizeInPx = '14px';
+      else if (fontSize === 'medium') sizeInPx = '16px';
+      else if (fontSize === 'large') sizeInPx = '18px';
+
+      document.body.style.setProperty('--main-font-size', sizeInPx);
+      localStorage.setItem('mainFontSize', sizeInPx);
+
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, { fontSize: fontSize }).then(() => {
+          document.getElementById('generalSettingsMsg').textContent = 'Font size saved!';
+          document.getElementById('generalSettingsMsg').style.color = 'green';
+        }).catch(error => {
+          document.getElementById('generalSettingsMsg').textContent = `Error saving font size: ${error.message}`;
+          document.getElementById('generalSettingsMsg').style.color = 'red';
+          console.error("Error updating document: ", error);
+        });
+      }
+    };
+
+    // Apply saved font size on load
+    const savedFontSize = localStorage.getItem('mainFontSize');
+    if (savedFontSize) {
+      document.body.style.setProperty('--main-font-size', savedFontSize);
+      document.getElementById('fontSize').value = savedFontSize === '14px' ? 'small' : (savedFontSize === '16px' ? 'medium' : 'large');
     }
+
+    // Function to set accent color
+    window.setAccentColor = function() {
+      const accentColor = document.getElementById('accentColor').value;
+      document.documentElement.style.setProperty('--accent-color', accentColor);
+      localStorage.setItem('accentColor', accentColor);
+
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, { accentColor: accentColor }).then(() => {
+          document.getElementById('generalSettingsMsg').textContent = 'Accent color saved!';
+          document.getElementById('generalSettingsMsg').style.color = 'green';
+        }).catch(error => {
+          document.getElementById('generalSettingsMsg').textContent = `Error saving accent color: ${error.message}`;
+          document.getElementById('generalSettingsMsg').style.color = 'red';
+          console.error("Error updating document: ", error);
+        });
+      }
+    };
+
+    // Apply saved accent color on load
+    const savedAccentColor = localStorage.getItem('accentColor');
+    if (savedAccentColor) {
+      document.documentElement.style.setProperty('--accent-color', savedAccentColor);
+      document.getElementById('accentColor').value = savedAccentColor;
+    }
+
+    // Function to save accessibility settings
+    window.saveAccessibility = function() {
+      const closedCaptions = document.getElementById('closedCaptions').checked;
+      const captionSize = document.getElementById('captionSize').value;
+      alert(`Closed Captions: ${closedCaptions}, Caption size: ${captionSize}`);
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, { closedCaptions, captionSize }).then(() => {
+          document.getElementById('generalSettingsMsg').textContent = 'Accessibility settings saved!';
+          document.getElementById('generalSettingsMsg').style.color = 'green';
+        }).catch(error => {
+          document.getElementById('generalSettingsMsg').textContent = `Error saving accessibility: ${error.message}`;
+          document.getElementById('generalSettingsMsg').style.color = 'red';
+          console.error("Error updating document: ", error);
+        });
+      }
+    };
+
+    // Function to change password
+    window.changePassword = async function() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const generalSettingsMsg = document.getElementById('generalSettingsMsg');
+
+        if (!currentUser) {
+            generalSettingsMsg.textContent = 'You must be signed in to change password.';
+            generalSettingsMsg.style.color = 'red';
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            generalSettingsMsg.textContent = 'New password must be at least 6 characters long.';
+            generalSettingsMsg.style.color = 'red';
+            return;
+        }
+
+        try {
+            // Reauthenticate user (important for security rules on password changes)
+            const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
+            await reauthenticateWithCredential(currentUser, credential);
+            await updatePassword(currentUser, newPassword);
+            generalSettingsMsg.textContent = 'Password changed successfully!';
+            generalSettingsMsg.style.color = 'green';
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+        } catch (error) {
+            generalSettingsMsg.textContent = `Error changing password: ${error.message}`;
+            generalSettingsMsg.style.color = 'red';
+            console.error("Error changing password:", error);
+        }
+    };
+
+    // Function to delete account
+    window.deleteAccount = async function() {
+      if (!currentUser) {
+        alert("No user is signed in.");
+        return;
+      }
+
+      if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+        try {
+          // Delete user document from Firestore first
+          await deleteDoc(doc(db, "users", currentUser.uid));
+          // Then delete the user from Authentication
+          await deleteUser(currentUser);
+          alert("Your account has been deleted successfully.");
+          // UI will be updated by onAuthStateChanged listener, redirecting to home/sign-in
+        } catch (error) {
+          console.error("Error deleting account:", error);
+          alert(`Error deleting account: ${error.message}`);
+        }
+      }
+    };
+
+    // Function to clear watch history
+    window.clearHistory = async function() {
+      if (!currentUser) {
+        alert("Please sign in to clear history.");
+        return;
+      }
+      if (confirm("Are you sure you want to clear your watch history?")) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        try {
+          await updateDoc(userDocRef, { watchHistory: [] });
+          alert("Watch history cleared!");
+          loadUserDataToSettingsPage(currentUser.uid); // Refresh UI
+        } catch (error) {
+          console.error("Error clearing history:", error);
+          alert(`Error clearing history: ${error.message}`);
+        }
+      }
+    };
+
+    // Function to log watched videos
+    window.logWatched = async function(videoTitle) {
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        try {
+          await updateDoc(userDocRef, {
+            watchHistory: arrayUnion(videoTitle)
+          });
+          console.log(`Logged watched: ${videoTitle}`);
+        } catch (error) {
+          console.error("Error logging watched video:", error);
+        }
+      }
+    };
+
+    // Function to create a new playlist
+    window.createPlaylist = async function() {
+        if (!currentUser) {
+            alert("Please sign in to create a playlist.");
+            return;
+        }
+        const playlistNameInput = document.getElementById('playlistName');
+        const playlistName = playlistNameInput.value.trim();
+
+        if (playlistName === '') {
+            alert('Please enter a playlist name.');
+            return;
+        }
+
+        const userDocRef = doc(db, "users", currentUser.uid);
+        try {
+            await updateDoc(userDocRef, {
+                [`playlists.${playlistName}`]: [] // Create an empty array for the new playlist
+            });
+            alert(`Playlist "${playlistName}" created!`);
+            playlistNameInput.value = ''; // Clear input
+            loadUserDataToSettingsPage(currentUser.uid); // Refresh playlists in UI
+        } catch (error) {
+            console.error("Error creating playlist:", error);
+            alert(`Error creating playlist: ${error.message}`);
+        }
+    };
+
+    // Function to add a video to a playlist (simplified, needs UI for selection)
+    window.addToPlaylist = async function(videoTitle) {
+        if (!currentUser) {
+            alert("Please sign in to add to a playlist.");
+            return;
+        }
+        // This is a simplified example. In a real app, you'd have a UI to select which playlist.
+        // For demonstration, let's assume we add to a default playlist or the first one.
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            const playlists = userData.playlists || {};
+            const playlistNames = Object.keys(playlists);
+
+            if (playlistNames.length === 0) {
+                alert("You need to create a playlist first from settings.");
+                return;
+            }
+
+            // For simplicity, add to the first playlist found or prompt user
+            const targetPlaylistName = playlistNames[0]; // Or implement a dialog to choose
+
+            try {
+                await updateDoc(userDocRef, {
+                    [`playlists.${targetPlaylistName}`]: arrayUnion(videoTitle)
+                });
+                alert(`Added "${videoTitle}" to "${targetPlaylistName}" playlist.`);
+                loadUserDataToSettingsPage(currentUser.uid); // Refresh UI
+            } catch (error) {
+                console.error("Error adding to playlist:", error);
+                alert(`Error adding to playlist: ${error.message}`);
+            }
+        }
+    };
+
+    // Placeholder for managing playlists (e.g., deleting, renaming)
+    window.managePlaylists = function() {
+        alert("Manage Playlists feature coming soon! You can view them in settings for now.");
+        // Implement detailed UI for managing playlists here
+    };
+
+    // Function to add to favorites (similar to playlist logic)
+    window.addToFavorites = async function(videoTitle) {
+        if (!currentUser) {
+            alert("Please sign in to favorite videos.");
+            return;
+        }
+        const userDocRef = doc(db, "users", currentUser.uid);
+        try {
+            await updateDoc(userDocRef, {
+                favorites: arrayUnion(videoTitle) // Assuming a 'favorites' array in user document
+            });
+            alert(`"${videoTitle}" added to favorites!`);
+        } catch (error) {
+            console.error("Error adding to favorites:", error);
+            alert(`Error adding to favorites: ${error.message}`);
+        }
+    };
+
+    // Function to share to WhatsApp
+    window.shareToWhatsApp = function(videoTitle, videoUrl) {
+      const message = `Check out this video on HOLY SCREEN: "${videoTitle}" - ${videoUrl}`;
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    };
+
+    // Function for fullscreen toggle
+    window.toggleFullScreen = function(videoCard) {
+      const iframe = videoCard.querySelector('iframe');
+      if (iframe) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.mozRequestFullScreen) { /* Firefox */
+          iframe.mozRequestFullScreen();
+        } else if (iframe.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) { /* IE/Edge */
+          iframe.msRequestFullscreen();
+        }
+      }
+    };
+
+    // Toggle action menu for video cards
+    window.toggleMenu = function(button) {
+      const actionList = button.nextElementSibling;
+      // Close all other open menus
+      document.querySelectorAll('.action-list.show').forEach(list => {
+        if (list !== actionList) {
+          list.classList.remove('show');
+        }
+      });
+      actionList.classList.toggle('show');
+    };
+
+    // Close action menu when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.action-menu')) {
+        document.querySelectorAll('.action-list.show').forEach(list => {
+          list.classList.remove('show');
+        });
+      }
+    });
+
+    // Handle profile photo upload
+    window.saveProfilePhoto = async function(input) {
+      if (!currentUser) {
+        alert("Please sign in to upload a profile photo.");
+        return;
+      }
+      if (input.files.length > 0) {
+        const file = input.files[0];
+        const storageRef = ref(storage, `profile_photos/${currentUser.uid}/${file.name}`);
+        try {
+          await uploadBytes(storageRef, file);
+          const photoURL = await getDownloadURL(storageRef);
+          await updateProfile(currentUser, { photoURL: photoURL }); // Update Firebase Auth profile
+          await updateDoc(doc(db, "users", currentUser.uid), { photoURL: photoURL }); // Update Firestore
+          document.getElementById('userPhoto').src = photoURL;
+          alert('Profile photo updated successfully!');
+        } catch (error) {
+          console.error("Error uploading profile photo:", error);
+          alert(`Error uploading photo: ${error.message}`);
+        }
+      }
+    };
+
+    // Function to edit profile name
+    window.editProfileName = async function() {
+        if (!currentUser) {
+            alert("You must be signed in to edit your profile name.");
+            return;
+        }
+
+        const newName = prompt("Enter your new display name:");
+        if (newName && newName.trim() !== "") {
+            try {
+                // Update Firebase Authentication profile
+                await updateProfile(currentUser, { displayName: newName.trim() });
+
+                // Update Firestore user document
+                const userDocRef = doc(db, "users", currentUser.uid);
+                await updateDoc(userDocRef, { displayName: newName.trim() });
+
+                document.getElementById('profileNameDisplay').textContent = newName.trim();
+                alert('Profile name updated successfully!');
+            } catch (error) {
+                console.error("Error updating profile name:", error);
+                alert(`Error updating profile name: ${error.message}`);
+            }
+        }
+    };
+
+
+    // Break Reminder
+    let breakTimeout;
+    window.startBreakReminder = function() {
+        const breakMinutes = parseInt(document.getElementById('breakMinutes').value);
+        if (isNaN(breakMinutes) || breakMinutes <= 0) {
+            alert('Please enter a valid number of minutes for the break reminder.');
+            return;
+        }
+
+        if (breakTimeout) {
+            clearTimeout(breakTimeout);
+        }
+
+        const durationMs = breakMinutes * 60 * 1000;
+        alert(`Break reminder set for ${breakMinutes} minutes.`);
+        breakTimeout = setTimeout(() => {
+            alert("HOLY SCREEN: Time for a break! Stretch your legs or rest your eyes.");
+        }, durationMs);
+    };
+
+    // Bedtime Reminder
+    let bedtimeTimeout;
+    window.setBedtimeReminder = function() {
+        const bedtimeInput = document.getElementById('bedtimeInput').value;
+        const reminderMessage = document.getElementById('reminderMessage');
+
+        if (!bedtimeInput) {
+            reminderMessage.textContent = 'Please select a bedtime.';
+            reminderMessage.style.color = 'red';
+            return;
+        }
+
+        if (bedtimeTimeout) {
+            clearTimeout(bedtimeTimeout);
+        }
+
+        const [hours, minutes] = bedtimeInput.split(':').map(Number);
+        const now = new Date();
+        const bedtime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0); // Use getDate() for day of month
+
+        if (bedtime < now) { // If bedtime is today but already passed, set for tomorrow
+            bedtime.setDate(bedtime.getDate() + 1);
+        }
+
+        const timeToBed = bedtime.getTime() - now.getTime();
+
+        reminderMessage.textContent = `Bedtime reminder set for ${bedtimeInput}.`;
+        reminderMessage.style.color = 'green';
+
+        bedtimeTimeout = setTimeout(() => {
+            alert("HOLY SCREEN: It's your bedtime! Time to wind down.");
+            // Optionally, reset for the next day immediately or let user re-set
+            // setBedtimeReminder();
+        }, timeToBed);
+    };
+
+    // Clear Cache function
+    window.clearCache = function() {
+        if (confirm("Are you sure you want to clear the local cache? This will reset some settings and history.")) {
+            localStorage.clear();
+            alert("Local cache cleared!");
+            // Optionally reload page to reflect changes immediately
+            location.reload();
+        }
+    };
+
+    // Reset All Settings function
+    window.resetAllSettings = async function() {
+        if (!currentUser) {
+            alert("Please sign in to reset your settings.");
+            return;
+        }
+        if (confirm("Are you sure you want to reset all your personalized settings? This action cannot be undone for cloud settings.")) {
+            try {
+                // Reset Firestore user document to initial state (or delete relevant fields)
+                const userDocRef = doc(db, "users", currentUser.uid);
+                await setDoc(userDocRef, {
+                    email: currentUser.email, // Keep email
+                    createdAt: new Date(),
+                    watchHistory: [],
+                    playlists: {},
+                    // Reset other fields to default or remove them
+                    language: null,
+                    quality: 'default',
+                    emailNotifications: false,
+                    pushNotifications: false,
+                    dataSharing: false,
+                    personalizedContent: false,
+                    fontSize: 'medium',
+                    accentColor: '#ff3300',
+                    closedCaptions: false,
+                    captionSize: 'medium'
+                });
+
+                // Clear local storage settings as well
+                localStorage.clear();
+                
+                alert("All settings reset successfully!");
+                // Refresh UI
+                location.reload(); 
+            } catch (error) {
+                console.error("Error resetting settings:", error);
+                alert(`Error resetting settings: ${error.message}`);
+            }
+        }
+    };
+
+
+    // Call initPage initially when the script loads to set up the page state
+    // onAuthStateChanged will then...
   </script>
 </body>
 </html>
